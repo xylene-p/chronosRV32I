@@ -1,7 +1,7 @@
 /*
- *  RISC-V ISA Simulator
+ *  Chronos: Hybrid Branch Predictor in a RISC-V 32I Processor
  *
- *  Code derived from https://github.com/CMU-18447/verilog_starter_code
+ *  5-stage pipelined
  */
 
 
@@ -12,7 +12,7 @@
  *  inst            (input)  - Instruction from memory
  *
  */
-module riscv_core(
+module chronos_core(
     // Outputs
     output [29:0] inst_addr;
 
@@ -33,7 +33,7 @@ endmodule // riscv_core
  *  RISC-V ALU Module
  *
  */
-module riscv_alu(
+module chronos_alu(
     output [31:0]   out;
     input [31:0]    in1, in2;
     input           ctrl;
@@ -76,9 +76,9 @@ endmodule // register
  *  adder
  *
  *  out (output) - adder result
- *  in1 (input)  - Operand1
- *  in2 (input)  - Operand2
- *  sub (input)  - Subtract?
+ *  in1 (input)  - operand1
+ *  in2 (input)  - operand2
+ *  sub (input)  - subtract?
  *
  */
 module adder(out, in1, in2, sub);
