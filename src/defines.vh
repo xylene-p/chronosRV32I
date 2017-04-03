@@ -5,6 +5,6 @@
 `define ALU_ADD 4'd0
 `define ALU_SUB 4'd1
 // Logic
-`define ALU_AND 4'd
+`define ALU_AND 4'd2
 
 `endif

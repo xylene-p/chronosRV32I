@@ -1,15 +1,15 @@
-#
 
-# Terminal colors and modifiers
-n := $(shell tput sgr0)
-# Red color
-r := $(shell tput setaf 1)
-# Green color
-g := $(shell tput setaf 2)
-# Bold text
-b := $(shell tput bold)
-# Underlined text
-u := $(shell tput smul)
+
+# # Terminal colors and modifiers
+# n := $(shell tput sgr0)
+# # Red color
+# r := $(shell tput setaf 1)
+# # Green color
+# g := $(shell tput setaf 2)
+# # Bold text
+# b := $(shell tput bold)
+# # Underlined text
+# u := $(shell tput smul)
 
 default all: help
 
