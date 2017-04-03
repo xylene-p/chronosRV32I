@@ -1,0 +1,59 @@
+D:/chronosRV32I/src/inst_mem.v {0 {vlog -work work -stats=none D:/chronosRV32I/src/inst_mem.v
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module chronos_inst_mem
+** Error: D:/chronosRV32I/src/inst_mem.v(10): In, out, or inout does not appear in port list: req_data.
+** Error: D:/chronosRV32I/src/inst_mem.v(7): (vlog-2110) Illegal reference to interface "mem_addr".
+
+** Error: D:/chronosRV32I/src/inst_mem.v(7): (vlog-2110) Illegal reference to interface "clk".
+
+** Error: D:/chronosRV32I/src/inst_mem.v(7): (vlog-2110) Illegal reference to interface "rst".
+
+** Error: D:/chronosRV32I/src/inst_mem.v(15): (vlog-2110) Illegal reference to interface "rst".
+
+** Error (suppressible): (vlog-2998) D:/chronosRV32I/src/inst_mem.v(15): Cannot mix packed and unpacked types in this operation.
+
+** Error: D:/chronosRV32I/src/inst_mem.v(15): Virtual interfaces in a comparison must be of same type.
+** Error: D:/chronosRV32I/src/inst_mem.v(20): (vlog-2110) Illegal reference to net "req_data".
+
+** Error: D:/chronosRV32I/src/inst_mem.v(20): (vlog-2110) Illegal reference to interface "mem_addr".
+
+
+} {4.0 6.0 7.0 8.0 9.0 10.0 11.0 12.0 15.0 17.0 18.0 19.0} {}} D:/chronosRV32I/src/chronos_core.v {0 {vlog -work work -stats=none D:/chronosRV32I/src/chronos_core.v
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module chronos_core
+** Error (suppressible): D:/chronosRV32I/src/chronos_core.v(11): (vlog-2388) 'addr' already declared in this scope (chronos_core).
+
+** Error (suppressible): D:/chronosRV32I/src/chronos_core.v(12): (vlog-2388) 'clk' already declared in this scope (chronos_core).
+
+** Error (suppressible): D:/chronosRV32I/src/chronos_core.v(12): (vlog-2388) 'rst' already declared in this scope (chronos_core).
+
+-- Compiling module core_reg
+** Error: D:/chronosRV32I/src/chronos_core.v(10): In, out, or inout does not appear in port list: inst.
+** Error: D:/chronosRV32I/src/chronos_core.v(7): (vlog-2110) Illegal reference to interface "addr".
+
+** Error: D:/chronosRV32I/src/chronos_core.v(7): (vlog-2110) Illegal reference to interface "clk".
+
+** Error: D:/chronosRV32I/src/chronos_core.v(7): (vlog-2110) Illegal reference to interface "rst".
+
+** Error: D:/chronosRV32I/src/chronos_core.v(17): (vlog-2110) Illegal reference to interface "addr".
+
+** Error: D:/chronosRV32I/src/chronos_core.v(17): Illegal left-hand side in continuous assignment.
+** Error (suppressible): (vlog-2997) D:/chronosRV32I/src/chronos_core.v(17): Illegal assignment to type 'interface inst' from type 'wire': Cannot assign a packed type to an unpacked type.
+
+** Error: D:/chronosRV32I/src/chronos_core.v(19): (vlog-2110) Illegal reference to interface "clk".
+
+** Error: D:/chronosRV32I/src/chronos_core.v(19): (vlog-2110) Illegal reference to interface "rst".
+
+** Error: D:/chronosRV32I/src/chronos_core.v(32): (vlog-2110) Illegal reference to net "data_out".
+
+** Error: D:/chronosRV32I/src/chronos_core.v(34): (vlog-2110) Illegal reference to net "data_out".
+
+
+} {11.0 13.0 14.0 15.0 16.0 17.0 18.0 19.0 20.0 21.0 23.0 24.0 25.0 26.0 27.0 28.0 29.0 30.0} {}} D:/chronosRV32I/sim/testbenches/two_stage_tb.v {1 {vlog -work work -stats=none D:/chronosRV32I/sim/testbenches/two_stage_tb.v
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module two_stage_tb
+
+Top level modules:
+	two_stage_tb
+
+} {} {}}
