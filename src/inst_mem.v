@@ -7,11 +7,11 @@ module inst_mem(
   fetch_addr, fetch_req, clk, rst
   );
 
-  output [31:0] request_data;
-  output        fetch_data_valid;
-  input  [31:0] fetch_addr;
-  input         fetch_req;
-  input         clk, rst;
+  output reg [31:0] request_data;
+  output reg        fetch_data_valid;
+  input      [31:0] fetch_addr;
+  input             fetch_req;
+  input             clk, rst;
 
   reg [31:0] memory [0:5];
 

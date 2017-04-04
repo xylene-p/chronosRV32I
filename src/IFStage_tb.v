@@ -1,4 +1,6 @@
-module IFStage_tb;
+`timescale 1ns/1ns
+
+module IFStage_tb();
 
   reg clk = 0, rst;
   reg en;
@@ -25,6 +27,8 @@ module IFStage_tb;
   initial begin
     $dumpvars();
 
+    en = 1;
+
     #(cycle);
     rst = 0;
     #(cycle);
@@ -35,7 +39,7 @@ module IFStage_tb;
       #(cycle);
       i = i + 1;
       $display("C %10d: pc=[%08x]",
-				          i, IFStage.PCReg.d);
+				          i, core.PCReg.d);
     end
 
     if (i == timeout) begin

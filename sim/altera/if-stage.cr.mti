@@ -1,0 +1,36 @@
+D:/chronosRV32I/src/add_const.v {1 {vlog -work work -stats=none D:/chronosRV32I/src/add_const.v
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module add_const
+
+Top level modules:
+	add_const
+
+} {} {}} D:/chronosRV32I/src/IFStage.v {1 {vlog -work work -stats=none D:/chronosRV32I/src/IFStage.v
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module IFStage
+
+Top level modules:
+	IFStage
+
+} {} {}} D:/chronosRV32I/src/inst_mem.v {1 {vlog -work work -stats=none D:/chronosRV32I/src/inst_mem.v
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module inst_mem
+
+Top level modules:
+	inst_mem
+
+} {} {}} D:/chronosRV32I/src/IFStage_tb.v {1 {vlog -work work -stats=none D:/chronosRV32I/src/IFStage_tb.v
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module IFStage_tb
+
+Top level modules:
+	IFStage_tb
+
+} {} {}} D:/chronosRV32I/src/register.v {1 {vlog -work work -stats=none D:/chronosRV32I/src/register.v
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module register
+
+Top level modules:
+	register
+
+} {} {}}

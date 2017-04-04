@@ -16,10 +16,6 @@ module IFStage(
   wire [31:0]  fetch_addr, fetch_addr_next;
   wire         fetch_req;
 
-  initial begin
-    assign fetch_addr = 0;
-  end
-
   register PCReg(
     .q(fetch_addr),
     .valid(fetch_req),
@@ -29,10 +25,12 @@ module IFStage(
     .rst(rst)
     );
   add_const #(4) PCNext(
-    .q(fetch_addr_next),
-    .d(fetch_addr)
+    .out(fetch_addr_next),
+    .in(fetch_addr)
     );
   inst_mem InstructionMemory(
+    .request_data(request_data),
+    .fetch_data_valid(fetch_data_valid),
     .fetch_addr(fetch_addr),
     .fetch_req(fetch_req),
     .clk(clk),

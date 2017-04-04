@@ -2,10 +2,10 @@
 
 module register(q, valid, d, en, clk, rst);
 
-  output [31:0] q;
-  output valid;
-  input  [31:0] d;
-  input en, clk, rst;
+  output reg [31:0] q;
+  output reg        valid;
+  input      [31:0] d;
+  input             en, clk, rst;
 
   always @(posedge clk or negedge rst) begin
       if (~rst) begin
