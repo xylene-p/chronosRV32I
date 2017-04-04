@@ -8,7 +8,7 @@ module IFStage_tb();
   wire [31:0] request_data;
   wire        fetch_data_valid;
 
-  integer i;
+  integer i = 0;
 
   IFStage core(
     .request_data(request_data),
@@ -27,19 +27,16 @@ module IFStage_tb();
   initial begin
     $dumpvars();
 
-    en = 1;
-
-    #(cycle);
     rst = 0;
     #(cycle);
     rst = 1;
-    #(cycle);
+    en = 1;
 
     while (i < timeout) begin
-      #(cycle);
+      $display("Cycle %5d: pc=[%08x] inst_fetch=[%08x]",
+				          i, core.PCReg.q, core.request_data);
       i = i + 1;
-      $display("C %10d: pc=[%08x]",
-				          i, core.PCReg.d);
+      #(cycle);
     end
 
     if (i == timeout) begin

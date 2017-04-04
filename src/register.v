@@ -7,10 +7,15 @@ module register(q, valid, d, en, clk, rst);
   input      [31:0] d;
   input             en, clk, rst;
 
+  initial begin
+    q <= 32'b0;
+    valid <= 1'b0;
+  end
+
   always @(posedge clk or negedge rst) begin
       if (~rst) begin
         q <= 32'b0;
-        valid <= 1'b0;
+        valid <= 1'b1;
       end
       else if (en == 1) begin
         q <= d;

@@ -15,16 +15,16 @@ module inst_mem(
 
   reg [31:0] memory [0:5];
 
+  reg [29:0] inst_addr;
+
   initial begin
     $readmemh("mem.hex", memory);
   end
 
   always @(*) begin
-    if (rst == 1'b0) begin
-      $readmemh("mem.hex", memory);
-    end
-    else if (fetch_req == 1'b1) begin
-      request_data <= memory[fetch_addr];
+    inst_addr <= fetch_addr[31:2];
+    if (fetch_req == 1'b1) begin
+      request_data <= memory[inst_addr];
       fetch_data_valid <= 1'b1;
     end
     else begin
