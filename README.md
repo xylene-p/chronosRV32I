@@ -1,7 +1,5 @@
-RISC-V Pipelined Processor
+Chronos RV32I: A RISC-V Pipelined Processor
 ===================
-
-A RV32I processor
 
 ## Overview
 RISC-V ISA Five-Stage Pipelined Processor written in Verilog
@@ -26,6 +24,14 @@ riscv32-unknown-elf-gcc       | riscv-gcc
 riscv32-unknown-elf-objdump   | riscv-objdump
 
 # Testing
+
+## Hardware Source Files
+In terminal:
+```bash
+bash run.sh
+```
+
+## Compiling Assembly Files
 Compile RISC-V assembly file (.S)
   riscv32-unknown-elf-gcc -o rv32itest rv32itest.S
 
