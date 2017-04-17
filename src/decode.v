@@ -10,20 +10,26 @@
 // inst         (input)  instruction
 module decode(
     // outputs
-    rs1, rs2, rd, reg_write_en, wb_sel,
+    rs1, rs2, rd, imm12, reg_write_en, wb_sel, opcode, funct7,
     // inputs
     inst
     );
 
     output [4:0] rs1, rs2, rd;
+    output [11:0] imm12;
+    output [6:0] opcode, funct7;
     output reg_write_en;
-    output reg wb_sel;
+    output reg [2:0] wb_sel;
     input [31:0] inst;
-    wire [6:0] opcode;
+    wire [2:0] funct3;
 
+    assign funct7 = inst[31:25];
+    assign imm12 = inst[31:20];
     assign rs2 = inst[24:20];
     assign rs1 = inst[19:15];
+    assign funct3 = inst[14:12];
     assign rd  = inst[11:7];
+    assign opcode = inst[6:0];
 
     assign reg_write_en = (opcode == `OPCODE_OP ||
                            opcode == `OPCODE_OP_IMM ||

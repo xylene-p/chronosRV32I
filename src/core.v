@@ -4,22 +4,26 @@
 
 module ChronosCore(
   // outputs
-  rs1, rs2, rd,
+  dcd_rs1, dcd_rs2, dcd_rd, dcd_imm12,
   // inputs
-  en, clk, rst, nop, pc_sel);
+  clk, rst, nop);
 
   wire [31:0] data;
-  input         en, clk, rst, pc_sel;
+  input         clk, rst;
   input [31:0]  nop;
 
   wire [31:0]  fetch_addr, fetch_addr_next, request_data;
   wire         fetch_req, fetch_data_valid;
   wire         kill;
 
-  output wire [4:0] rs1, rs2, rd;
+  output wire [4:0] dcd_rs1, dcd_rs2, dcd_rd;
+  output wire [11:0] dcd_imm12;
+  wire [6:0] dcd_funct7, dcd_opcode;
   wire [4:0] rw_addr;
   wire [31:0] rw_data, rd1_data, rd2_data;
-  wire rw_en;
+  wire [2:0] wb_sel;
+  wire en, en2, rw_en;
+  wire pc_sel;
 
 
   /* Instruction Fetch Stage */
@@ -60,12 +64,28 @@ module ChronosCore(
 
   // Instruction Decoder
   decode Decoder(
-    .rs1(rs1),
-    .rs2(rs2),
-    .rd(rd),
+    .rs1(dcd_rs1),
+    .rs2(dcd_rs2),
+    .rd(dcd_rd),
+    .imm12(dcd_imm12),
+    .opcode(dcd_opcode),
+    .funct7(dcd_funct7),
     .reg_write_en(reg_write_en),
     .wb_sel(wb_sel),
     .inst(data));
+
+  // Hazard Detection Unit
+
+  hazard_detect HDU(
+    .PC_write(en),
+    .IFID_write(en2), // TODO: wire this to IF/ID register
+    .Mux_select(pc_sel),
+    .inst_type(dcd_opcode),
+    .IFID_Reg_Rs1(dcd_rs1),
+    .IFID_Reg_Rs2(dcd_rs2),
+    .IFID_Reg_Rd(dcd_rd),
+    .IDEX_MemRead(mem_read_en),
+    .IDEX_Reg_Rd(idex_rd));
 
   // General-Purpose Register File
   regfile RegisterFile(
@@ -79,7 +99,6 @@ module ChronosCore(
     .clk(clk),
     .rst(rst));
 
-  // Decoder
 
 
 endmodule

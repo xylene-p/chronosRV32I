@@ -12,6 +12,6 @@ module mux2to1(out, in1, in2, sel);
     input  [input2_len-1:0] in2;
     input sel;
 
-    assign out = sel ? in1 : in2;
+    assign out = sel ? in2 : in1;
 
 endmodule
