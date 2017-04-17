@@ -17,14 +17,11 @@ input IDEX_MemRead;
 
 always@(IFID_Reg_Rs, IFID_Reg_Rd, IDEX_Reg_Rd, IDEX_MemRead)
 begin
-	if(IDEX_MemRead)
+	if(IDEX_MemRead && (IDEX_Reg_Rd == IFID_Reg_Rs || IDEX_Reg_Rd == IFID_Reg_Rd))
 	begin
-		if(IDEX_Reg_Rd == IFID_Reg_Rs || IDEX_Reg_Rd == IFID_Reg_Rd)
-		begin
-			PC_write = 0; 
-			IFID_write =0; 
-			Mux_select = 1;
-		end
+		PC_write = 0; 
+		IFID_write =0; 
+		Mux_select = 1;
 	end
 	else begin
 		PC_write =1; 

@@ -1,12 +1,12 @@
-`include riscv_defines.v
-`include Hazard_Detection_Unit.v
+`include "riscv_defines.v"
+`include "Hazard_Detection_Unit.v"
 
 module Hazard_Detection_Unit_tb();
 
-wire [4:0] IFID_WRITE_RS, IFID_WRITE_RD, IDEX_MEMWRITE; 
-wire IDEX_MEMWRITE; 
+reg [4:0] IFID_WRITE_RS, IFID_WRITE_RD, IDEX_WRITE_RD; 
+reg IDEX_MEMWRITE; 
 
-reg PC_READ; IFID_READ; MUX_SELECT_READ; 
+wire PC_READ, IFID_READ, MUX_SELECT_READ; 
 
 
 	// //output
@@ -26,11 +26,30 @@ Hazard_Detection_Unit _firstTestInstance(
 	.IFID_Reg_Rd(IFID_WRITE_RD),
 	.IDEX_MemRead(IDEX_MEMWRITE),
 	.IDEX_Reg_Rd(IDEX_WRITE_RD)
-	)
+	);
 
-initial begin
-	$display("");
-	
+initial begin
+
+	$display("Testing if returns PASSED for a hazard");
+	// 1st inst register access rd- x1F
+	// 2nd inst register access rs- x1F , x1B
+	IDEX_WRITE_RD = 5'b0; 
+	IFID_WRITE_RS = 5'b0; 
+	IFID_WRITE_RD = 5'b0;
+	IDEX_MEMWRITE = 1'b1; 
+	$display("%b, %b, %b, %b", IDEX_WRITE_RD, IFID_WRITE_RS, IFID_WRITE_RD, IDEX_MEMWRITE); 
+	if(PC_READ == 0 && IFID_READ == 0&& MUX_SELECT_READ == 1)begin
+		$display("PASSED"); 
+	end
+	else begin
+		$display("FAILED");
+	end
+	$display("PC_READ - %d \t IFID_READ - %d \t MUX_SELECT_READ - %d", 
+			PC_READ, 
+			IFID_READ, 
+			MUX_SELECT_READ); 
+	#100 $finish; 
+
 end
 
 endmodule
