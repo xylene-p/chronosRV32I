@@ -1,0 +1,6 @@
+# Compiled source #
+###################
+
+*.vcd
+*.o
+*.out
