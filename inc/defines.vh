@@ -5,7 +5,7 @@
 `ifndef defines_vh
 `define defines_vh
 
-`define INST_NOP 32'h16;
+`define INST_NOP 32'h16
 
 // OPCODES
 // R-Type Instructions
