@@ -91,8 +91,8 @@ module ChronosCore(
   regfile RegisterFile(
     .rd1(rd1_data),
     .rd2(rd2_data),
-    .rs1(rs1),
-    .rs2(rs2),
+    .rs1(dcd_rs1),
+    .rs2(dcd_rs2),
     .rw_dest(rw_addr),
     .rw_data(rw_data),
     .rw_en(rw_en),
