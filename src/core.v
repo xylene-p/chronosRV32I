@@ -99,6 +99,19 @@ module ChronosCore(
     .clk(clk),
     .rst(rst));
 
+    /* EX Stage */
 
+
+
+
+
+    /* MEM Stage */
+
+
+
+
+
+
+    /* WB Stage */
 
 endmodule

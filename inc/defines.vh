@@ -5,7 +5,7 @@
 `ifndef defines_vh
 `define defines_vh
 
-`define INST_NOP 32'h16;
+`define INST_NOP 32'h13
 
 // OPCODES
 // R-Type Instructions
@@ -33,6 +33,14 @@
 `define F3_SR		3'b101
 `define F3_OR		3'b110
 `define F3_AND		3'b111
+
+// [SB-Type] funct3
+`define F3_BEQ		3'b000
+`define F3_BNE		3'b001
+`define F3_BLT		3'b100
+`define F3_BGE		3'b101
+`define F3_BLTU		3'b110
+`define F3_BGEU		3'b111
 
 // Write Back Select
 `define WB_ALU		3'b001

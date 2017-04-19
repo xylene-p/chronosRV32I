@@ -4,8 +4,6 @@ Chronos RV32I: A RISC-V Pipelined Processor
 ## Overview
 RISC-V ISA Five-Stage Pipelined Processor written in Verilog
 
-## Files
-
 ## Setup
 Ubuntu 16.04 LTS -> Linux VM on Google Cloud Platform
 Specs: 2 vCPUs, 7.5 GB
@@ -15,6 +13,16 @@ Specs: 2 vCPUs, 7.5 GB
 - Verilog compiler: Icarus Verilog
 - RISC-V toolchain (for compiling .S programs)
     - Install the RISC-V toolchain as specified below.
+
+#### RISC-V Software Tools Installation
+The RISC-V toolchain is available on [GitHub](http://github.com/riscv/riscv-tools).
+
+### Environment Configuration
+
+Value                         | Alias
+---------------------------   | ---------------
+riscv32-unknown-elf-gcc       | riscv-gcc
+riscv32-unknown-elf-objdump   | riscv-objdump
 
 ## Testing
 
@@ -55,13 +63,3 @@ Generate assembly dump file (.dump)
     - [ ] Predictor 2: Q-learning predictor
     - [ ] Hybrid branch selector
     - [ ] Integrate in ID-Stage
-
-#### RISC-V Software Tools Installation
-The RISC-V toolchain is available on [GitHub](http://github.com/riscv/riscv-tools).
-
-### Environment Configuration
-
-Value                         | Alias
----------------------------   | ---------------
-riscv32-unknown-elf-gcc       | riscv-gcc
-riscv32-unknown-elf-objdump   | riscv-objdump
