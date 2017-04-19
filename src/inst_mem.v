@@ -13,12 +13,12 @@ module inst_mem(
   input             fetch_req;
   input             clk, rst;
 
-  reg [31:0] memory [0:5];
+  reg [31:0] memory [0:20];
 
   reg [29:0] inst_addr;
 
   initial begin
-    $readmemh("mem.hex", memory);
+    $readmemh("beq.hex", memory);
   end
 
   always @(*) begin

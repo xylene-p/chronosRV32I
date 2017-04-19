@@ -1,0 +1,51 @@
+// ChronosRV32I Defines
+// Derived from RISC-V Instruction Set Manual v2.1
+// Chapter 9 - RV32/64 G Instruction Set Listings
+
+`ifndef defines_vh
+`define defines_vh
+
+`define INST_NOP 32'h13
+
+// OPCODES
+// R-Type Instructions
+`define OPCODE_OP	    7'b0110011
+// I-Type Instructions
+`define OPCODE_OP_IMM 	7'b0010011
+`define OPCODE_LUI	    7'b0110111
+`define OPCODE_LOAD	    7'b0000011
+// S-Type Instructions
+`define OPCODE_STORE	7'b0100011
+// U-Type Instructions
+`define OPCODE_J	    7'b1100111
+`define OPCODE_JAL	    7'b1101111
+`define OPCODE_JALR	    7'b1101011
+`define OPCODE_BRANCH	7'b1100011
+// System Call Instructions
+`define OPCODE_SYS      7'b1111011
+
+// [R-Type] funct3
+`define F3_ADD		3'b000
+`define F3_SLL		3'b001
+`define F3_SLT		3'b010
+`define F3_SLTU		3'b011
+`define F3_XOR		3'b100
+`define F3_SR		3'b101
+`define F3_OR		3'b110
+`define F3_AND		3'b111
+
+// [SB-Type] funct3
+`define F3_BEQ		3'b000
+`define F3_BNE		3'b001
+`define F3_BLT		3'b100
+`define F3_BGE		3'b101
+`define F3_BLTU		3'b110
+`define F3_BGEU		3'b111
+
+// Write Back Select
+`define WB_ALU		3'b001
+`define WB_MEM		3'b010
+`define WB_PC4		3'b011
+`define WB_SYS		3'b100
+
+`endif
