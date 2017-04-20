@@ -8,7 +8,7 @@
 // op*     (output) ALU operand
 // alu_sel (output) ALU select
 // inst    (input)  instruction
-// rs*     (input)  regfile register
+// rs*     (input)  regfile register value
 module alu_decode(
     // outputs
     op1, op2, alu_sel,
@@ -56,7 +56,7 @@ module alu_decode(
 
             // SB-Type Instruction:
             `OPCODE_BRANCH:
-                
+
             default:
                 op2 = rs2;
 

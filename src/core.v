@@ -46,8 +46,6 @@ module ChronosCore(
     .clk(clk),
     .rst(rst));
 
-  /* IF/ID Stage */
-
   // PC + 4 Register
   add_const #(4) PCNext(
     .out(fetch_addr_next),
@@ -59,6 +57,10 @@ module ChronosCore(
     .in1(request_data),
     .in2(nop),
     .sel(pc_sel));
+
+  /* IF/ID Stage */
+
+
 
   /* ID Stage */
 
@@ -99,18 +101,22 @@ module ChronosCore(
     .clk(clk),
     .rst(rst));
 
+    /* ID/EX Stage */
+
     /* EX Stage */
 
 
 
 
 
+    /* EX/MEM Stage */
+
     /* MEM Stage */
 
 
 
 
-
+    /* MEM/WB Stage*/
 
     /* WB Stage */
 
