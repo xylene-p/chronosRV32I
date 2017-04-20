@@ -20,7 +20,7 @@ module ChronosCore(
   output wire [11:0] dcd_imm12;
   wire [6:0] dcd_funct7, dcd_opcode;
   wire [4:0] rw_addr;
-  wire [31:0] rw_data, rd1_data, rd2_data;
+  wire [31:0] rw_data, rs1_data, rs2_data;
   wire [2:0] wb_sel;
   wire en, en2, rw_en;
   wire pc_sel;
@@ -91,8 +91,8 @@ module ChronosCore(
 
   // General-Purpose Register File
   regfile RegisterFile(
-    .rd1(rd1_data),
-    .rd2(rd2_data),
+    .rd1(rs1_data),
+    .rd2(rs2_data),
     .rs1(dcd_rs1),
     .rs2(dcd_rs2),
     .rw_dest(rw_addr),
