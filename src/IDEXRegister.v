@@ -1,4 +1,4 @@
-module IDEXRegister(
+module IDEXRegister(				// comment : Not done
 //output
 	PC4_out, 
 	Operand1_out, 
@@ -16,6 +16,9 @@ module IDEXRegister(
 	//control to EXE
 	Alu_fun_out; 
 	wb_sel_out;
+	//HazardControlUnit outputs
+	IDEXRegRead; 
+	IDEXMemRead;
 
 //inputs
 	clk, 
