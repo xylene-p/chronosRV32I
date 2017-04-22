@@ -2,7 +2,8 @@ module IDEXRegister(				// comment : Not done
 //output
 	output reg [31:0] PC4_out, 
 	output reg [31:0] Operand1_out, 
-	output reg [31:0] Operand2_out, 
+	output reg [31:0] Operand2_out,
+	output reg Prediction_out; 
 	 
 	//controls to WB
 	output reg wb_sel_out; 
@@ -25,6 +26,7 @@ module IDEXRegister(				// comment : Not done
 	input [31:0] PC4_in,  
 	input [31:0] Operand1_in, 
 	input [31:0] Operand2_in,
+	input Prediction_in, 
 	//controls to WB
 	input wb_sel_in; 
 	input register_write_enable_in; 

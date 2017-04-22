@@ -1,15 +1,13 @@
 module IFIDRegister(
-	PC4_out, 
-	Instruction_out,
-	PC4_in, 
-	Instruction_in, 
-	clk, 
-	rst,
-	en); 
-
-input [31:0] PC4_in, Instruction_in; 
-input clk, rst, en; 
-output reg [31:0] PC4_out, Instruction_out; 
+	output reg [31:0] PC4_out, 
+	output reg [31:0] Instruction_out,
+	output reg Prediction_out, 
+	input [31:0] PC4_in; 
+	input [31:0] Instruction_in, 
+	input Prediction_in, 
+	input clk, 
+	input rst,
+	input en); 
 
 always@(posedge clk)begin
 
