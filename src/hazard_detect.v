@@ -5,9 +5,9 @@
 
 module hazard_detect(
 	//output
-	PC_write, 	// needs to be changed 
+	PC_write, 
 	IFID_write,
-	Mux_select,
+	PCMux_select,
 	//inputs
 	inst_type,
 	IFID_Reg_Rs1,
@@ -21,7 +21,8 @@ module hazard_detect(
 	DEC_kill, 
 	);
 
-output reg PC_write, IFID_write, Mux_select, IF_kill, DEC_kill;
+output reg PC_write, IFID_write, IF_kill, DEC_kill;
+output reg [1:0] PCMux_select; 
 input [4:0] IFID_Reg_Rs1, IFID_Reg_Rs2, IFID_Reg_Rd, IDEX_Reg_Rd;
 input IDEX_MemRead;
 input [6:0] inst_type;
@@ -35,14 +36,14 @@ always @(*) begin
 			begin
 				PC_write <= 0;
 				IFID_write <= 0;
-				Mux_select <= 1;
+				PCMux_select <= 1;
 				IF_kill <= 1; 
 				DEC_kill <= 1; 
 			end
 			else begin
 				PC_write <= 1;
 				IFID_write <= 1;
-				Mux_select <= 0;
+				PCMux_select <= 0;
 				IF_kill <= 0; 
 				DEC_kill <= 0; 
 			end
@@ -53,14 +54,14 @@ always @(*) begin
 			begin
 				PC_write <= 0;
 				IFID_write <= 0;
- 				Mux_select <= 1;
+ 				PCMux_select <= 1;
  				IF_kill <= 1; 
 				DEC_kill <= 1; 
  			end
  			else begin
  				PC_write <= 1;
  				IFID_write <= 1;
- 				Mux_select <= 0;
+ 				PCMux_select <= 0;
  				IF_kill <= 0; 
 				DEC_kill <= 0; 
  			end
@@ -68,7 +69,7 @@ always @(*) begin
 		default: begin
 			PC_write <= 1;
 			IFID_write <= 1;
-			Mux_select <= 0;
+			PCMux_select <= 0;
 			IF_kill <= 0; 
 			DEC_kill <= 0; 
 		end
