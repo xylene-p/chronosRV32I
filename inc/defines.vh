@@ -48,4 +48,22 @@
 `define WB_PC4		3'b011
 `define WB_SYS		3'b100
 
+// ALU Functions
+`define ALU_ADD 	4'd0
+`define ALU_SLL		4'd1
+`define ALU_SLT		4'd2
+`define ALU_SLTU	4'd3
+`define ALU_XOR		4'd4
+`define ALU_SRL		4'd5
+`define ALU_SRA		4'd6
+`define ALU_OR		4'd7
+`define ALU_AND		4'd8
+`define ALU_MUL		4'd9
+`define ALU_DIV		4'd10
+`define ALU_DIVU	4'd11
+`define ALU_REM		4'd12
+`define ALU_REMU	4'd13
+`define ALU_LUI		4'd14
+`define ALU_NONE	4'd15
+
 `endif

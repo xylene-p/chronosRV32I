@@ -33,10 +33,10 @@ module alu_decode(
     wire [11:0] split_imm12 = {imm12hi, imm12lo};
 
     always @(*) begin
-        // Operand 1
+        // Operand 1 Assignment
         op1 = (opcode == `OPCODE_LUI) ? {12'b0, lui_imm} : rs1;
 
-        // Operand 2
+        // Operand 2 Assignment
         case (opcode)
             // R-Type Instruction:
             `OPCODE_OP:
@@ -57,13 +57,47 @@ module alu_decode(
             // Store Instruction
             `OPCODE_STORE:
                 op2 = split_imm12;
-
+            // Load Instruction
             `OPCODE_LOAD:
                 op2 = imm12;
 
             default:
                 op2 = rs2;
+        endcase
 
+        // ALU function select
+        case (opcode)
+            `OPCODE_OP, `OPCODE_OP_IMM:
+                case (funct3)
+                    `F3_ADD:  alu_sel = `ALU_ADD;
+                    `F3_SLL:  alu_sel = `ALU_SLL;
+                    `F3_SLT:  alu_sel = `ALU_SLT;
+                    `F3_SLTU: alu_sel = `ALU_SLTU;
+                    `F3_XOR:  alu_sel = `ALU_XOR;
+                    `F3_SR:   alu_sel = inst[30] ? `ALU_SRA : `ALU_SRL;
+                    `F3_OR:   alu_sel = `ALU_OR;
+                    `F3_AND:  alu_sel = `ALU_AND;
+                    default:  alu_sel = `ALU_NONE;
+                endcase
+
+            `OPCODE_LOAD, `OPCODE_STORE:
+                alu_sel = `ALU_ADD;
+
+            `OPCODE_LUI:
+                alu_sel = `ALU_LUI;
+
+            `OPCODE_BRANCH:
+                case (funct3)
+                    `F3_BEQ, `F3_BNE:   alu_sel = `ALU_XOR;
+                    `F3_BLT, `F3_BGE:   alu_sel = `ALU_SLT;
+                    `F3_BLTU, `F3_BGEU: alu_sel = `ALU_SLTU;
+                    default: alu_sel = `ALU_NONE;
+                endcase
+
+            default:
+                alu_sel = `ALU_NONE;
+
+        endcase
     end
 
 endmodule
