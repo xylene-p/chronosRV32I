@@ -25,6 +25,10 @@ module ChronosCore(
   wire en, en2, rw_en;
   wire pc_sel;
 
+  // Decode - Internal Wires
+  wire [31:0] op1, op2;
+  wire [4:0] alu_sel;
+
 
   /* Instruction Fetch Stage */
 
@@ -100,6 +104,14 @@ module ChronosCore(
     .rw_en(rw_en),
     .clk(clk),
     .rst(rst));
+
+  alu_decode ALUDecoder(
+    .op1(alu_op1),
+    .op2(alu_op2),
+    .alu_sel(alu_sel),
+    .inst(inst),
+    .rs1(rs1_data),
+    .rs2(rs2_data));
 
     /* ID/EX Stage */
 

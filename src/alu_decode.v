@@ -63,7 +63,7 @@ module alu_decode(
 
             default:
                 op2 = rs2;
-
+                
     end
 
 endmodule
