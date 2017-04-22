@@ -9,14 +9,17 @@ module IFIDRegister(
 
 input [31:0] PC4_in, Instruction_in; 
 input clk, rst, en; 
-output [31:0] PC4_out, Instruction_out; 
+output reg [31:0] PC4_out, Instruction_out; 
 
-always@(posedge clk)begin
-	if(rst)begin
+always@(posedge clk)begin
+
+	if(rst)begin
+
 		PC4_out = 0; 
 		Instruction_out =0; 
 	end
-	if(en)begin
+	if(en)begin
+
 		PC4_out <= PC4_in; 
 		Instruction_out <= Instruction_in; 
 	end
