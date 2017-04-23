@@ -11,6 +11,7 @@
 module decode(
     // outputs
     rs1, rs2, rd, imm12, reg_write_en, wb_sel, opcode, funct7,
+    mem_req_write, mem_req_type,
     // inputs
     inst
     );
@@ -38,6 +39,12 @@ module decode(
                            opcode == `OPCODE_JAL ||
                            opcode == `OPCODE_JALR ||
                            opcode == `OPCODE_SYS);
+
+    assign memory_request = (opcode == `OPCODE_LOAD ||
+                             opcode == `OPCODE_STORE);
+
+	assign memory_request_type = (opcode == `OPCODE_STORE) ?
+	                             `MEM_REQ_WRITE : `MEM_REQ_READ;
 
     always @ (*) begin
         case (opcode)
