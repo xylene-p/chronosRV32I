@@ -87,6 +87,15 @@ module ChronosCore(
     .in2(nop),
     .sel(kill_IF));
 
+  branch_predictor BranchPredictor(
+    .pred_target(branch_predicted_target),
+    .prediction(branch_prediction),
+    .correct_target(fetch_addr),
+    .correct_pc4(pc4_IFID_out),
+    .curr_pc4(fetch_addr_next),
+    .clk(clk),
+    .rst(rst));
+
   /* IF/ID Stage */
 
   register_IFID IFIDRegister(
@@ -178,7 +187,7 @@ module ChronosCore(
 
   /* EX Stage */
 
-  // ALU MODULE HERE
+  // TODO: ALU MODULE HERE
 
   branch_gen BranchGenerator(
     .branch_target(branch_predicted_target),
