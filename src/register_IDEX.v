@@ -18,6 +18,7 @@ module register_IDEX(				// comment : Not done
 	//HazardControlUnit outputs
 	output reg [4:0] IDEXRegRead_out,
 	output reg IDEXMemRead,
+	output reg [4:0] rs2_out,
 //inputs
 	input clk,
 	input rst,
@@ -28,6 +29,7 @@ module register_IDEX(				// comment : Not done
 	input [31:0] operand1_in,
 	input [31:0] operand2_in,
 	input [4:0] instruction_rd_in,
+	input [4:0] rs2_in,
 	input prediction_in,
 	//controls to WB
 	input register_write_enable_in,

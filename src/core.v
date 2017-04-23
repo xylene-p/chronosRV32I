@@ -46,7 +46,7 @@ module ChronosCore(
 
   // ID/EX Output Wires
   wire [31:0] pc4_IDEX_out, pc_IDEX_out, inst_IDEX_out, op1_IDEX_out, op2_IDEX_out;
-  wire [4:0] inst_rd_IDEX_out, reg_read_IDEX_out;
+  wire [4:0] inst_rd_IDEX_out, reg_read_IDEX_out, rs2_IDEX_out;
   wire prediction_IDEX_out, reg_write_en_IDEX_out,
        mem_read_IDEX_out, mem_req_write_IDEX_out,
        mem_req_type_IDEX_out;
@@ -55,6 +55,13 @@ module ChronosCore(
 
   // ALU wires
   wire [31:0] alu_out;
+
+  // EX/MEM Output Wires
+  wire [31:0] alu_EXMEM_out;
+  wire [4:0] inst_rd_EXMEM_out, rs2_EXMEM_out;
+  wire reg_write_en_EXMEM_out;
+  wire mem_req_write_EXMEM_out, mem_req_type_EXMEM_out;
+  wire [2:0] wb_sel_EXMEM_out;
 
   /* Instruction Fetch Stage */
 
@@ -108,17 +115,17 @@ module ChronosCore(
   /* IF/ID Stage */
 
   register_IFID IFIDRegister(
-     .pc4_out(pc4_IFID_out),
-     .pc_out(pc_IFID_out),
-     .instruction_out(inst_IFID_out),
-     .prediction_out(pred_IFID_out),
-     .pc4_in(fetch_addr_next),
-     .pc_in(fetch_addr),
-     .instruction_in(request_data),
-     .prediction_in(branch_prediction),
-     .clk(clk),
-     .rst(rst),
-     .en(IFID_write));
+    .pc4_out(pc4_IFID_out),
+    .pc_out(pc_IFID_out),
+    .instruction_out(inst_IFID_out),
+    .prediction_out(pred_IFID_out),
+    .pc4_in(fetch_addr_next),
+    .pc_in(fetch_addr),
+    .instruction_in(request_data),
+    .prediction_in(branch_prediction),
+    .clk(clk),
+    .rst(rst),
+    .en(IFID_write));
 
   /* ID Stage */
 
@@ -186,6 +193,7 @@ module ChronosCore(
     .wb_sel_out(wb_sel_IDEX_out),
     .IDEXRegRead_out(reg_read_IDEX_out),
     .IDEXMemRead(mem_read_IDEX_out),
+    .rs2_out(rs2_IDEX_out),
     .clk(clk),
     .rst(rst),
     .en(en),
@@ -194,6 +202,7 @@ module ChronosCore(
     .operand1_in(alu_op1),
     .operand2_in(alu_op2),
     .instruction_rd_in(dcd_rd),
+    .rs2_in(dcd_rs2),
     .prediction_in(branch_prediction),
     .register_write_enable_in(reg_write_en),
     .mem_request_write_in(dcd_mem_req_type),
@@ -204,10 +213,10 @@ module ChronosCore(
   /* EX Stage */
 
   alu ALU(
-      .alu_out(alu_out),
-      .op1(op1_IDEX_out),
-      .op2(op2_IDEX_out),
-      .alu_sel(alu_sel_IDEX_out);
+    .alu_out(alu_out),
+    .op1(op1_IDEX_out),
+    .op2(op2_IDEX_out),
+    .alu_sel(alu_sel_IDEX_out));
 
   branch_gen BranchGenerator(
     .branch_target(branch_predicted_target),
@@ -218,6 +227,25 @@ module ChronosCore(
 
   /* EX/MEM Stage */
 
+  register_EXMEM MEMEXRegister(
+    .alu_out(alu_EXMEM_out),
+    .rs2_out(rs2_EXMEM_out),
+    .instruction_rd_out(inst_rd_EXMEM_out),
+    .register_write_enable_out(reg_wr_en_EXMEM_out),
+    .mem_request_write_out(mem_req_write_EXMEM_out),
+    .mem_request_type_out(mem_req_type_EXMEM_out),
+    .wb_sel_out(wb_sel_EXMEM_out),
+    .alu_out_in(alu_out),
+    .rs2_in(rs2_IDEX_out),
+    .instruction_rd_in(),
+    .clk(clk),
+    .en(en),
+    .rst(rst),
+    .register_write_enable_in(),
+    .mem_request_write_in(),
+    .mem_request_type_in(),
+    .wb_sel_in());
+
   /* MEM Stage */
 
 
@@ -225,6 +253,10 @@ module ChronosCore(
 
   /* MEM/WB Stage*/
 
+
+
   /* WB Stage */
+
+  
 
 endmodule

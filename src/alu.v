@@ -4,7 +4,7 @@ module alu (
 	output reg [31:0] alu_out,
 	input [31:0] op1,
 	input [31:0] op2,
-	input [4:0] alu_sel
+	input [3:0] alu_sel
 );
 	always @ (*) begin
 		case (alu_sel)
