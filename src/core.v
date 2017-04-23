@@ -176,6 +176,12 @@ module ChronosCore(
     .rs1(rs1_data),
     .rs2(rs2_data));
 
+  mux_2_1 IDKill(
+    .out(),
+    .in1(),
+    .in2(nop),
+    .sel(kill_DEC));
+
   /* ID/EX Stage */
 
   register_IDEX IDEXRegister(
@@ -249,47 +255,46 @@ module ChronosCore(
   /* MEM Stage */
 
   data_memory DataMemory(
-      .output_data(), // out to WB mux
-      .memory_addr(),
-      .write_data(),
-      .write_mask(),
-      .instruction(),
-      .data(), // in from RS2
-      .addr() // in from alu_out
-      );
+    .output_data(), // out to WB mux
+    .memory_addr(),
+    .write_data(),
+    .write_mask(),
+    .instruction(),
+    .data(), // in from RS2
+    .addr()); // in from ALU out
 
   simulated_mem SimulatedMemory(
-      .load_data(),
-      .valid(),
-      .write_data(),
-      .cmd(),
-      .enable(),
-      .mask(),
-      .addr(),
-      .clk(),
-      .reset());
+    .load_data(),
+    .valid(),
+    .write_data(),
+    .cmd(),
+    .enable(),
+    .mask(),
+    .addr(),
+    .clk(),
+    .reset());
 
   /* MEM/WB Stage*/
 
   register_MEMWB MEMWBRegister(
-      .wb_data_out(),
-      .instruction_rd_out(),
-      .register_write_enable_out(),
-      .wb_data_in(),
-      .instruction_rd_in(),
-      .clk(clk),
-      .rst(rst),
-      .en(en)
-      .register_write_enable_in());
+    .wb_data_out(),
+    .instruction_rd_out(),
+    .register_write_enable_out(),
+    .wb_data_in(),
+    .instruction_rd_in(),
+    .clk(clk),
+    .rst(rst),
+    .en(en)
+    .register_write_enable_in());
 
   /* WB Stage */
 
   writeback WritebackStage(
-      .output_data(),
-      .out_data_mem(),
-      .out_pc4(),
-      .out_alu(),
-      .wb_sel());
+    .output_data(),
+    .out_data_mem(),
+    .out_pc4(),
+    .out_alu(),
+    .wb_sel());
 
 
 endmodule
