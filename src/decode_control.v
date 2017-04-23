@@ -8,7 +8,7 @@
 // reg_write_en (output) register write enable
 // wb_sel       (output) write back select
 // inst         (input)  instruction
-module decode(
+module decode_control(
     // outputs
     rs1, rs2, rd, imm12, reg_write_en, wb_sel, opcode, funct7,
     mem_req_write, mem_req_type,

@@ -1,6 +1,4 @@
-// Chronos Register
-
-module register(q, valid, d, en, clk, rst);
+module register_pc(q, valid, d, en, clk, rst);
 
   output reg [31:0] q;
   output reg        valid;

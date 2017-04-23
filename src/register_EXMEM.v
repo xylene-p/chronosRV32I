@@ -1,4 +1,4 @@
-module EXMEMRegister(				// comment : not done; 
+module register_EXMEM(				// comment : not done; 
 //output
 	output reg [31:0] alu_out, 
 	output reg [31:0] rs2_out,

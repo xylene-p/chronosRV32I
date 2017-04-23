@@ -9,7 +9,7 @@
 // alu_sel (output) ALU select
 // inst    (input)  instruction
 // rs*     (input)  regfile register value
-module alu_decode(
+module decode_alu(
     // outputs
     op1, op2, alu_sel,
     // inputs
