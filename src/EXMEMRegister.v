@@ -2,6 +2,7 @@ module EXMEMRegister(				// comment : not done;
 //output
 	output reg [31:0] ALUOUT_out; 
 	output reg [31:0] RS2_out;
+	output reg [4:0] InstructionRd_out; 
 
 	//controls to WB
 	output reg wb_sel_out; 
@@ -13,6 +14,7 @@ module EXMEMRegister(				// comment : not done;
 //input
 	input [31:0] ALUOUT_in; 
 	input [31:0] RS2_in;
+	input [4:0] InstructionRd_in; 
  
 	input clk; 
 	input rst; 
@@ -30,6 +32,8 @@ always@(posedge clk) begin
 	if(rst)begin
 		ALUOUT_out = 0; 
 		RS2_out = 0;
+
+		InstructionRd_out = 0; 
 
 		//controls to WB
 		wb_sel_out = 0; 
@@ -50,6 +54,9 @@ always@(posedge clk) begin
 		mem_rw_out <= mem_rw_in; 
 		mem_val_out <= mem_val_in; 
 		wb_sel_out <= wb_sel_in; 
+
+		InstructionRd_out <= InstructionRd_in;
+
 	end
 end
 

@@ -3,6 +3,7 @@ module IDEXRegister(				// comment : Not done
 	output reg [31:0] PC4_out, 
 	output reg [31:0] Operand1_out, 
 	output reg [31:0] Operand2_out,
+	output reg [4:0] InstructionRd_out; 
 	output reg Prediction_out; 
 	 
 	//controls to WB
@@ -14,7 +15,7 @@ module IDEXRegister(				// comment : Not done
 	output reg wb_sel_out; 
 	//control to EXE
 	output reg Alu_sel_out; 
-	output reg wb_sel_out;
+	output reg [2:0] wb_sel_out;
 	//HazardControlUnit outputs
 	output reg [4:0] IDEXRegRead_out; 
 	output reg IDEXMemRead;
@@ -26,6 +27,7 @@ module IDEXRegister(				// comment : Not done
 	input [31:0] PC4_in,  
 	input [31:0] Operand1_in, 
 	input [31:0] Operand2_in,
+	input [4:0] InstructionRd_in; 
 	input Prediction_in, 
 	//controls to WB
 	input wb_sel_in; 
@@ -33,10 +35,10 @@ module IDEXRegister(				// comment : Not done
 	//controls to MEM
 	input mem_rw_in; 
 	input mem_val_in; 
-	input wb_sel_in; 
+	input [2:0] wb_sel_in; 
 	//control to EXE
 	input [3:0] Alu_sel_in; 
-	input wb_sel_in;
+	input [2:0] wb_sel_in;
 	//Hazard Control unit input 
 	input [4:0] IDEXRegRead_in; 
 	);
@@ -64,6 +66,8 @@ always@(posedge clk) begin
 		Alu_sel_out = 0; 
 		wb_sel_out = 0;
 
+		InstructionRd_out = 0; 
+
 
 	end
 	else if(en)begin
@@ -85,6 +89,8 @@ always@(posedge clk) begin
 		//control to EXE
 		Alu_sel_out <= Alu_sel_in; 
 		wb_sel_out <= wb_sel_in;
+
+		InstructionRd_out <= InstructionRd_in; 
 	end
 end
 
