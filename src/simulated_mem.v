@@ -1,4 +1,4 @@
-module mem (
+module simulated_mem (
 	input clk,
 	input reset,
 
