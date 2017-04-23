@@ -6,7 +6,7 @@ module ChronosCore(
   // outputs
   dcd_rs1, dcd_rs2, dcd_rd, dcd_imm12,
   // inputs
-  clk, rst, nop);
+  clk, rst, nop, en);
 
   wire [31:0] data;
   input         clk, rst;
@@ -22,7 +22,8 @@ module ChronosCore(
   wire [4:0] rw_addr;
   wire [31:0] rw_data, rs1_data, rs2_data;
   wire [2:0] wb_sel;
-  wire en, rw_en;
+  input en;
+  wire rw_en;
 
   // Decode Wires
   wire [31:0] alu_op1, alu_op2;
@@ -284,7 +285,7 @@ module ChronosCore(
     .instruction_rd_in(),
     .clk(clk),
     .rst(rst),
-    .en(en)
+    .en(en),
     .register_write_enable_in());
 
   /* WB Stage */

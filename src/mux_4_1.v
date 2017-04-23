@@ -24,7 +24,7 @@ module mux_4_1(
             `PCMUX_PRED_TGT:
                 pc_next <= predicted_target;
             default:
-                pc_next <= curr_pc4;
+                pc_next <= 0;
         endcase
     end
 

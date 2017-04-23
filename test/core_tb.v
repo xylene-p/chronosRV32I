@@ -6,6 +6,7 @@ module Core_tb();
 
   reg clk = 0, rst;
   reg [31:0] nop;
+  reg en;
   wire [4:0] rs1, rs2, rd;
   wire [11:0] imm12;
 
@@ -18,7 +19,8 @@ module Core_tb();
     .dcd_imm12(imm12),
     .clk(clk),
     .rst(rst),
-    .nop(nop));
+    .nop(nop),
+    .en(en));
 
   parameter half_cycle = 5;
   localparam cycle = 2 * half_cycle;
@@ -30,6 +32,7 @@ module Core_tb();
     $dumpfile("core.vcd");
     $dumpvars();
     nop <= `INST_NOP;
+    en <= 1;
 
     rst <= 0;
     #(cycle);
