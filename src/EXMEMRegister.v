@@ -1,62 +1,54 @@
 module EXMEMRegister(				// comment : not done; 
 //output
-	output reg [31:0] ALUOUT_out; 
-	output reg [31:0] RS2_out;
-	output reg [4:0] InstructionRd_out; 
-
+	output reg [31:0] alu_out, 
+	output reg [31:0] rs2_out,
+	output reg [4:0] instruction_rd_out,
 	//controls to WB
-	output reg wb_sel_out; 
-	output reg register_write_enable_out; 
+	output reg register_write_enable_out,
 	//controls to MEM
-	output reg mem_rw_out; 
-	output reg mem_val_out; 
-	output reg wb_sel_out; 
+	output reg mem_request_write_out,
+	output reg mem_request_type_out,
+	output reg [2:0] wb_sel_out,
 //input
-	input [31:0] ALUOUT_in; 
-	input [31:0] RS2_in;
-	input [4:0] InstructionRd_in; 
- 
-	input clk; 
-	input rst; 
-	input en; 
+	input [31:0] alu_out_in,
+	input [31:0] rs2_in,
+	input [4:0] instruction_rd_in,
+	input clk, 
+	input rst,
+	input en,
 	//controls to WB
-	input wb_sel_in; 
-	input register_write_enable_in; 
+	input register_write_enable_in,
 	//controls to MEM
-	input mem_rw_in; 
-	input mem_val_in; 
-	input wb_sel_in; 
+	input mem_request_write_in,
+	input mem_request_type_in,
+	input [2:0] wb_sel_in,
 	);
 
 always@(posedge clk) begin
-	if(rst)begin
-		ALUOUT_out = 0; 
-		RS2_out = 0;
-
-		InstructionRd_out = 0; 
-
+	if(~rst)begin
+		alu_out = 0; 
+		rs2_out = 0;
+		instruction_rd_out = 0; 
 		//controls to WB
 		wb_sel_out = 0; 
 		register_write_enable_out = 0; 
 		//controls to MEM
-		mem_rw_out = 0; 
-		mem_val_out = 0; 
-		wb_sel_out = 0; 
+		mem_request_write_out = 0; 
+		mem_request_type_out = 0; 
+		wb_sel_out = 3'b0; 
 	end
 	else if(en) begin
-		ALUOUT_out <= ALUOUT_in; 
-		RS2_out <= RS2_in;
-
+		alu_out <= alu_out_in; 
+		rs2_out <= rs2_in;
+		instruction_rd_out <= instruction_rd_in;
 		//controls to WB
 		wb_sel_out <= wb_sel_in; 
 		register_write_enable_out <= register_write_enable_in; 
 		//controls to MEM
-		mem_rw_out <= mem_rw_in; 
-		mem_val_out <= mem_val_in; 
+		mem_request_write_out <= mem_request_write_in; 
+		mem_request_type_out <= mem_request_type_in; 
 		wb_sel_out <= wb_sel_in; 
-
-		InstructionRd_out <= InstructionRd_in;
-
+		
 	end
 end
 
