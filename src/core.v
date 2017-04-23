@@ -95,15 +95,13 @@ module ChronosCore(
 
   // General-Purpose Register File
   register_file RegisterFile(
-    .rd1(rs1_data),
-    .rd2(rs2_data),
-    .rs1(dcd_rs1),
-    .rs2(dcd_rs2),
-    .rw_dest(rw_addr),
-    .rw_data(rw_data),
-    .rw_en(rw_en),
-    .clk(clk),
-    .rst(rst));
+    .read_data_1(rs1_data),
+    .read_data_2(rs2_data),
+    .rs_1(dcd_rs1),
+    .rs_2(dcd_rs2),
+    .register_write(rw_addr),
+    .write_data(rw_data),
+    .register_write_enable(rw_en));
 
   decode_alu ALUDecoder(
     .op1(alu_op1),
