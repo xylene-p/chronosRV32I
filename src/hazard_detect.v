@@ -10,19 +10,19 @@ module hazard_detect(
 	output reg kill_IF, 
 	output reg kill_DEC,
 	input [6:0] opcode,
-	input [4:0] IFID_Reg_Rs1,
-	input [4:0] IFID_Reg_Rs2,
-	input [4:0] IFID_Reg_Rd,
-	input [4:0] IDEX_Reg_Rd
-	input IDEX_MemRead,
+	input [4:0] regIFID_rs_1,
+	input [4:0] regIFID_rs_2,
+	input [4:0] regIFID_rd,
+	input [4:0] regIDEX_rd
+	input memReadIDEX,
 	);
 
 always @(*) begin
 	case (opcode)
 		`OPCODE_OP: begin// R-type instruction
-			if (IDEX_MemRead && (IDEX_Reg_Rd == IFID_Reg_Rs1 ||
-								 IDEX_Reg_Rd == IFID_Reg_Rs2 ||
-								 IDEX_Reg_Rd == IFID_Reg_Rd))
+			if (memReadIDEX && (regIDEX_rd == regIFID_rs_1 ||
+								 regIDEX_rd == regIFID_rs_2 ||
+								 regIDEX_rd == regIFID_rd))
 			begin
 				pc_sel <= 0;
 				IFID_write <= 0;
@@ -39,8 +39,8 @@ always @(*) begin
 			end
 		end
 		`OPCODE_OP_IMM: begin // I-type instruction
-			if (IDEX_MemRead && (IDEX_Reg_Rd == IFID_Reg_Rs1 ||
-								 IDEX_Reg_Rd == IFID_Reg_Rd))
+			if (memReadIDEX && (regIDEX_rd == regIFID_rs_1 ||
+								 regIDEX_rd == regIFID_rd))
 			begin
 				pc_sel <= 0;
 				IFID_write <= 0;
