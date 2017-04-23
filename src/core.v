@@ -115,6 +115,13 @@ module ChronosCore(
 
     /* ID/EX Stage */
 
+riscV_ALU myALU(
+    .in_A(op1), 
+    .in_B(op2), 
+    .alu_Fx(alu_sel),
+    .Output(Alu_out), 
+    .Zer0(zer00));
+
     /* EX Stage */
 
 
