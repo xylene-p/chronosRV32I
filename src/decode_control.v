@@ -13,14 +13,14 @@ module decode_control(
     rs1, rs2, rd, imm12, reg_write_en, wb_sel, opcode, funct7,
     mem_req_write, mem_req_type,
     // inputs
-    inst
-    );
+    inst);
 
     output [4:0] rs1, rs2, rd;
     output [11:0] imm12;
     output [6:0] opcode, funct7;
     output reg_write_en;
     output reg [2:0] wb_sel;
+    output mem_req_write, mem_req_type;
     input [31:0] inst;
     wire [2:0] funct3;
 
