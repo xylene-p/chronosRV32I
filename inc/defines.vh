@@ -67,4 +67,20 @@
 `define ALU_LUI		4'd14
 `define ALU_NONE	4'd15
 
+// Memory Request Types
+`define MEM_REQ_READ	1'b0
+`define MEM_REQ_WRITE	1'b1
+// Memory Command Types
+`define MEM_CMD_READ	1'b0
+`define MEM_CMD_WRITE	1'b1
+
+// Load and Store Funct3 Types
+`define F3_LB		3'b000 /*Load Byte*/
+`define F3_LH		3'b001 /*Load Half Word*/
+`define F3_LW		3'b010 /*Load Word*/
+
+`define F3_SB		3'b000 /*Store Byte*/
+`define F3_SH		3'b001 /*Store Half Word*/
+`define F3_SW		3'b010 /*Store Word*/
+
 `endif
