@@ -67,4 +67,8 @@
 `define ALU_LUI		4'd14
 `define ALU_NONE	4'd15
 
+// Memory Request Data
+`define MEM_REQ_READ	1'b0
+`define MEM_REQ_WRITE	1'b1
+
 `endif
