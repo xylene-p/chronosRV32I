@@ -1,6 +1,8 @@
 module register_IDEX(				// comment : Not done
 //output
 	output reg [31:0] pc4_out,
+	output reg [31:0] pc_out,
+	output reg [31:0] inst_out,
 	output reg [31:0] operand1_out,
 	output reg [31:0] operand2_out,
 	output reg [4:0] instruction_rd_out,
@@ -11,7 +13,7 @@ module register_IDEX(				// comment : Not done
 	output reg mem_request_write_out,
 	output reg mem_request_type_out,
 	//control to EXE
-	output reg alu_sel_out,
+	output reg [3:0] alu_sel_out,
 	output reg [2:0] wb_sel_out,
 	//HazardControlUnit outputs
 	output reg [4:0] IDEXRegRead_out,
@@ -21,6 +23,8 @@ module register_IDEX(				// comment : Not done
 	input rst,
 	input en,
 	input [31:0] pc4_in,
+	input [31:0] pc_in,
+	input [31:0] inst_in,
 	input [31:0] operand1_in,
 	input [31:0] operand2_in,
 	input [4:0] instruction_rd_in,
@@ -35,10 +39,12 @@ module register_IDEX(				// comment : Not done
 	input [2:0] wb_sel_in);
 
 always@(posedge clk) begin
-	if(~rst)begin
+	if (rst == 0) begin
 		operand1_out = 0;
 		operand2_out = 0;
 		pc4_out = 0;
+		pc_out = 0;
+		inst_out = 0;
 		instruction_rd_out = 0;
 		//signal to hazard control unit
 		IDEXMemRead = 0;
@@ -53,10 +59,11 @@ always@(posedge clk) begin
 		alu_sel_out = 0;
 		wb_sel_out = 3'b0;
 	end
-	else if(en)begin
+	else if (en) begin
 		operand2_out <= operand2_in;
 		operand1_out <= operand1_in;
 		pc4_out <= pc4_in;
+		pc_out <= pc4_in;
 		instruction_rd_out <= instruction_rd_in;
 		//signal to hazard control unit
 		IDEXMemRead = 1;

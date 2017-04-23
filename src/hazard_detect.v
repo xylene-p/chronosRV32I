@@ -1,4 +1,4 @@
-// Chronos Hazard Detection Unit
+	// Chronos Hazard Detection Unit
 // Author: Sikender Shahid, Katherine Perez
 
 `include "defines.vh"

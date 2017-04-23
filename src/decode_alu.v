@@ -16,7 +16,7 @@ module decode_alu(
     inst, rs1, rs2);
 
     output reg [31:0] op1, op2;
-    output reg [4:0] alu_sel;
+    output reg [3:0] alu_sel;
     input [31:0] inst, rs1, rs2;
 
     // instruction slots

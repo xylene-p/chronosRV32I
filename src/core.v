@@ -18,6 +18,7 @@ module ChronosCore(
   output wire [4:0] dcd_rs1, dcd_rs2, dcd_rd;
   output wire [11:0] dcd_imm12;
   wire [6:0] dcd_funct7, dcd_opcode;
+  wire dcd_mem_req_type, dcd_mem_req_write;
   wire [4:0] rw_addr;
   wire [31:0] rw_data, rs1_data, rs2_data;
   wire [2:0] wb_sel;
@@ -25,7 +26,7 @@ module ChronosCore(
 
   // Decode Wires
   wire [31:0] alu_op1, alu_op2;
-  wire [4:0] alu_sel;
+  wire [3:0] alu_sel;
 
   // Hazard Detect Unit Wires
   wire [2:0] pc_sel;
@@ -37,15 +38,23 @@ module ChronosCore(
   wire branch_prediction;
 
   // IF/ID Output Wires
-  wire [31:0] pc4_IFID_out, inst_IFID_out;
+  wire [31:0] pc4_IFID_out, pc_IFID_out, inst_IFID_out;
   wire pred_IFID_out;
 
   // Branch Target Generator Wires
   wire [31:0] branch_target;
 
   // ID/EX Output Wires
-  wire [31:0] inst_IDEX_out, pc_IDEX_out, alu_out;
+  wire [31:0] pc4_IDEX_out, pc_IDEX_out, inst_IDEX_out, op1_IDEX_out, op2_IDEX_out;
+  wire [4:0] inst_rd_IDEX_out, reg_read_IDEX_out;
+  wire prediction_IDEX_out, reg_write_en_IDEX_out,
+       mem_read_IDEX_out, mem_req_write_IDEX_out,
+       mem_req_type_IDEX_out;
+  wire [3:0] alu_sel_IDEX_out;
+  wire [2:0] wb_sel_IDEX_out;
 
+  // ALU wires
+  wire [31:0] alu_out;
 
   /* Instruction Fetch Stage */
 
@@ -100,9 +109,11 @@ module ChronosCore(
 
   register_IFID IFIDRegister(
      .pc4_out(pc4_IFID_out),
+     .pc_out(pc_IFID_out),
      .instruction_out(inst_IFID_out),
      .prediction_out(pred_IFID_out),
      .pc4_in(fetch_addr_next),
+     .pc_in(fetch_addr),
      .instruction_in(request_data),
      .prediction_in(branch_prediction),
      .clk(clk),
@@ -121,6 +132,8 @@ module ChronosCore(
     .funct7(dcd_funct7),
     .reg_write_en(reg_write_en),
     .wb_sel(wb_sel),
+    .mem_req_write(dcd_mem_req_write),
+    .mem_req_type(dcd_mem_req_type),
     .inst(data));
 
   // Hazard Detection Unit
@@ -159,31 +172,34 @@ module ChronosCore(
   /* ID/EX Stage */
 
   register_IDEX IDEXRegister(
-    .pc4_out(),
-    .operand1_out(),
-    .operand2_out(),
-    .instruction_rd_out(),
-    .prediction_out(),
-    .register_write_enable_out(),
-    .mem_request_write_out(),
-    .mem_request_type_out(),
-    .alu_sel_out(),
-    .wb_sel_out(),
-    .IDEXRegRead_out(),
-    .IDEXMemRead(),
+    .pc4_out(pc4_IDEX_out),
+    .pc_out(pc_IDEX_out),
+    .inst_out(inst_IDEX_out),
+    .operand1_out(op1_IDEX_out),
+    .operand2_out(op2_IDEX_out),
+    .instruction_rd_out(inst_rd_IDEX_out),
+    .prediction_out(prediction_IDEX_out),
+    .register_write_enable_out(reg_write_en_IDEX_out),
+    .mem_request_write_out(mem_req_write_IDEX_out),
+    .mem_request_type_out(mem_req_type_IDEX_out),
+    .alu_sel_out(alu_sel_IDEX_out),
+    .wb_sel_out(wb_sel_IDEX_out),
+    .IDEXRegRead_out(reg_read_IDEX_out),
+    .IDEXMemRead(mem_read_IDEX_out),
     .clk(clk),
     .rst(rst),
-    .en(),
-    .pc4_in(),
-    .operand1_in(),
-    .operand2_in(),
-    .instruction_rd_in(),
-    .prediction_in(),
-    .register_write_enable_in(),
-    .mem_request_write_in(),
-    .mem_request_type_in(),
-    .alu_sel_in(),
-    .wb_sel_in());
+    .en(en),
+    .pc4_in(pc4_IFID_out),
+    .pc_in(pc_IFID_out),
+    .operand1_in(alu_op1),
+    .operand2_in(alu_op2),
+    .instruction_rd_in(dcd_rd),
+    .prediction_in(branch_prediction),
+    .register_write_enable_in(reg_write_en),
+    .mem_request_write_in(dcd_mem_req_type),
+    .mem_request_type_in(dcd_mem_req_write),
+    .alu_sel_in(alu_sel),
+    .wb_sel_in(wb_sel));
 
   /* EX Stage */
 

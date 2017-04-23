@@ -1,8 +1,10 @@
 module register_IFID(
 	output reg [31:0] pc4_out,
+	output reg [31:0] pc_out,
 	output reg [31:0] instruction_out,
 	output reg prediction_out,
 	input [31:0] pc4_in,
+	input [31:0] pc_in,
 	input [31:0] instruction_in,
 	input prediction_in,
 	input clk,
@@ -11,18 +13,21 @@ module register_IFID(
 
 always@(posedge clk)begin
 
-	if (~rst) begin
+	if (rst == 0) begin
 		pc4_out = 0;
+		pc_out = 0;
 		instruction_out = 0;
 		prediction_out = 0;
 	end
-	if (en) begin
+	else if (en) begin
 		pc4_out <= pc4_in;
+		pc_out <= pc_in;
 		instruction_out <= instruction_in;
 		prediction_out <= prediction_in;
 	end
 	else begin
 		pc4_out <= pc4_out;
+		pc_out <= pc_out;
 		instruction_out <= instruction_out;
 		prediction_out <= prediction_out;
 	end
