@@ -203,7 +203,11 @@ module ChronosCore(
 
   /* EX Stage */
 
-  // TODO: ALU MODULE HERE
+  alu ALU(
+      .alu_out(alu_out),
+      .op1(op1_IDEX_out),
+      .op2(op2_IDEX_out),
+      .alu_sel(alu_sel_IDEX_out);
 
   branch_gen BranchGenerator(
     .branch_target(branch_predicted_target),
