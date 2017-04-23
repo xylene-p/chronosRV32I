@@ -92,7 +92,7 @@ module ChronosCore(
     .prediction(branch_prediction),
     .correct_target(fetch_addr),
     .correct_pc4(pc4_IFID_out),
-    .curr_pc4(fetch_addr_next),
+    .current_pc4(fetch_addr_next),
     .clk(clk),
     .rst(rst));
 

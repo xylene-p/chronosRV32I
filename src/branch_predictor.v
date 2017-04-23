@@ -22,7 +22,7 @@ module branch_predictor(
     always @(posedge clk) begin
         if (rst == 0) begin
             prediction <= 0;
-            pred_tgt <= 32'b0;
+            pred_target <= 32'b0;
         end
         else begin
             // If the target was in the table, predict taken
@@ -44,6 +44,7 @@ module prediction_table(target, index, correct_target);
 
     output reg [31:0] target;
     input [3:0] index;
+    input [31:0] correct_target;
     reg [31:0] branch_target_buffer[15:0];
 
     always @(*) begin
