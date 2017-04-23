@@ -1,10 +1,7 @@
-`define MEM_CMD_READ	1'b0
-`define MEM_CMD_WRITE	1'b1
-
 module mem (
 	input clk,
 	input reset,
-	
+
 	input [31:0] addr,
 	input [3:0] mask,
 	input enable,
