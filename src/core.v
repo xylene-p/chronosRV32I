@@ -33,7 +33,7 @@ module ChronosCore(
   /* Instruction Fetch Stage */
 
   // PC Register
-  register PCReg(
+  register_pc PCReg(
     .q(fetch_addr),
     .valid(fetch_req),
     .d(fetch_addr_next),
@@ -56,7 +56,7 @@ module ChronosCore(
     .in(fetch_addr));
 
   // PC Mux
-  mux2to1 PCMux(
+  mux_2_1 PCMux(
     .out(data),
     .in1(request_data),
     .in2(nop),
@@ -69,7 +69,7 @@ module ChronosCore(
   /* ID Stage */
 
   // Instruction Decoder
-  decode Decoder(
+  decode_control Decoder(
     .rs1(dcd_rs1),
     .rs2(dcd_rs2),
     .rd(dcd_rd),
@@ -94,7 +94,7 @@ module ChronosCore(
     .IDEX_Reg_Rd(idex_rd));
 
   // General-Purpose Register File
-  regfile RegisterFile(
+  register_file RegisterFile(
     .rd1(rs1_data),
     .rd2(rs2_data),
     .rs1(dcd_rs1),
@@ -105,7 +105,7 @@ module ChronosCore(
     .clk(clk),
     .rst(rst));
 
-  alu_decode ALUDecoder(
+  decode_alu ALUDecoder(
     .op1(alu_op1),
     .op2(alu_op2),
     .alu_sel(alu_sel),
