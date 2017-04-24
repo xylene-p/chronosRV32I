@@ -3,6 +3,7 @@
 
 VC=iverilog
 FLAGS=-I
+root=$(pwd)
 
 IFIDSOURCES= src/register_pc.v \
 src/inst_mem.v \
@@ -19,11 +20,20 @@ IDEXSOURCES= src/register_file.v \
 	src/mux_2_1.v \
 	src/register_IDEX.v 
 
-EXMEMSOURCES= \
+EXMEMSOURCES= src/alu.v \
+	src/branch_gen.v \
+	src/branch_predictor.v \
+	src/add_const.v \
+	src/mux_2_1.v \
+	src/register_EXMEM.v \
 
 
 
 all: 
+
+core: 
+	$(VC) $(FLAGS)inc -o output/coreTest.out src/*.v test/core_tb.v
+	vvp output/coreTest.out
 
 stageIFID:
 	$(VC) $(FLAGS)inc -o output/stage_IFID_tb.out $(IFIDSOURCES) test/stage_IFID_tb.v
@@ -35,7 +45,7 @@ stageIDEX:
 
 stageEXMEM:
 	$(VC) $(FLAGS)inc -o output/stage_EXMEM_tb.out $(EXMEMSOURCES) test/stage_EXMEM_tb.v
-	vvp output/stage_EXMEM_tb.out; 
+	vvp output/stage_EXMEM_tb.out
 
 stageMEMWB:
 

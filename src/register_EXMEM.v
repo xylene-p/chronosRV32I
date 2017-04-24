@@ -24,7 +24,7 @@ module register_EXMEM(				// comment : not done;
 	input [2:0] wb_sel_in);
 
 always@(posedge clk) begin
-	if(~rst)begin
+	if(rst == 0)begin
 		alu_out = 0;
 		rs2_out = 0;
 		instruction_rd_out = 0;
@@ -36,7 +36,7 @@ always@(posedge clk) begin
 		mem_request_type_out = 0;
 		wb_sel_out = 3'b0;
 	end
-	else if(en) begin
+	else if(en == 0) begin
 		alu_out <= alu_out_in;
 		rs2_out <= rs2_in;
 		instruction_rd_out <= instruction_rd_in;
