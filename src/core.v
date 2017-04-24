@@ -52,8 +52,11 @@ module chronosCore(
   always @(*) begin
     if (kill_IF) begin
         inst <= `INST_NOP;
+    end
     else begin
         inst <= imem_resp_data;
+    end
+  end
 
   //======= IF/EX Registers =======//
 

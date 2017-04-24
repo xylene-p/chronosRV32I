@@ -2,7 +2,7 @@
 // Author: Katherine Perez
 
 module chronosTestHarness(
-    output testrig_tohost;
+    output testrig_tohost,
     input testrig_fromhost, clk, rst);
 
     wire [31:0] imem_req_addr, imem_resp_data;
