@@ -3,13 +3,9 @@
 
 module chronosTestHarness(
     output testrig_tohost,
-<<<<<<< HEAD
     input testrig_fromhost,
     input clk,
     input rst);
-=======
-    input testrig_fromhost, clk, rst);
->>>>>>> 0bb01fd3fec4f433b4eb3efa275c1c900acd0013
 
     wire [31:0] imem_req_addr, imem_resp_data;
     wire imem_req_val;
