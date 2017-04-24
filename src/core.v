@@ -147,6 +147,7 @@ module ChronosCore(
     .rs1(rs1_data),
     .rs2(rs2_data));
 
+<<<<<<< HEAD
   /* ID/EX Stage */
 
   register_IDEX IDEXRegister(
@@ -175,6 +176,19 @@ module ChronosCore(
     .mem_request_type_in(),
     .alu_sel_in(),
     .wb_sel_in());
+=======
+    /* ID/EX Stage */
+
+riscV_ALU myALU(
+    .in_A(op1), 
+    .in_B(op2), 
+    .alu_Fx(alu_sel),
+    .Output(Alu_out), 
+    .Zer0(zer00));
+
+    /* EX Stage */
+
+>>>>>>> refs/remotes/origin/core_change
 
   /* EX Stage */
 
