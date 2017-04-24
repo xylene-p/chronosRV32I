@@ -1,10 +1,17 @@
 `define F3_LB		3'b000 /*Load Byte*/
 `define F3_LH		3'b001 /*Load Half Word*/
 `define F3_LW		3'b010 /*Load Word*/
+`define F3_LBU		3'b100
+`define F3_LHU		3'b101
+
 
 `define F3_SB		3'b000 /*Store Byte*/
 `define F3_SH		3'b001 /*Store Half Word*/
 `define F3_SW		3'b010 /*Store Word*/
+
+`define MEM_CMD_READ	1'b0
+`define MEM_CMD_WRITE	1'b1
+
 
 module data_memory (
 	input [31:0] instruction,
@@ -12,7 +19,7 @@ module data_memory (
 	input [31:0] addr,	//in from alu_out
 
 	output [31:0] memory_addr,
-
+	output reg cmd,
 	output reg [31:0] write_data,
 	output reg [3:0] write_mask,
 
@@ -25,6 +32,15 @@ module data_memory (
 	assign memory_addr = {addr[31:2], 2'b0};
 
 	reg [31:0] write_data_masked;
+
+	always @(*) begin
+		case (funct3)
+			`F3_SB, `F3_SH, `F3_SW: cmd = `MEM_CMD_WRITE;
+			`F3_LBU,`F3_LB, `F3_LHU, `F3_LH, `F3_LW : cmd = `MEM_CMD_READ;
+		endcase
+	end
+
+
 
 	always @ (*) begin
 		case (funct3)
