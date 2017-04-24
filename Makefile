@@ -11,7 +11,10 @@ src/add_const.v \
 src/mux_4_1.v
 
 
-IDEXSOURCES= src/register_IDEX.v \
+IDEXSOURCES= src/register_file.v \
+	src/decode_alu.v \
+	src/decode_control.v \
+	src/hazard_detect.v
 
 all: 
 
