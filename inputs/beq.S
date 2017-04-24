@@ -18,6 +18,8 @@
  **/
 
 // The initial value to seed the test with
+
+// Test: beq.S
 #define TEST_SEED               512
 
     .text                       // Declare the code to be in the .text segment

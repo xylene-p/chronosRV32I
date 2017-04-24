@@ -21,6 +21,7 @@ module decode_control(
     output reg_write_en;
     output reg [2:0] wb_sel;
     output mem_req_write, mem_req_type;
+    output [2:0] pc_sel;
     input [31:0] inst;
     wire [2:0] funct3;
 

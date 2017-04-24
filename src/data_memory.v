@@ -1,6 +1,6 @@
 // Data Memory
 
-module data_mem (
+module memory_controller (
 	input [31:0] instruction,
 	input [31:0] data,	//in from RS2
 	input [31:0] addr,	//in from alu_out

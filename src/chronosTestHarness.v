@@ -2,8 +2,10 @@
 // Author: Katherine Perez
 
 module chronosTestHarness(
-    output testrig_tohost;
-    input testrig_fromhost, clk, rst);
+    output testrig_tohost,
+    input testrig_fromhost,
+    input clk,
+    input rst);
 
     wire [31:0] imem_req_addr, imem_resp_data;
     wire imem_req_val;
@@ -20,6 +22,7 @@ module chronosTestHarness(
                     .dmem_req_addr(dmem_req_addr),
                     .dmem_req_wdata(dmem_req_wdata),
                     .dmem_req_val(dmem_req_val),
+                    .dmem_resp_data(dmem_resp_data),
                     .clk(clk),
                     .rst(rst),
                     .testrig_fromhost(testrig_fromhost));
@@ -37,10 +40,10 @@ module chronosTestHarness(
     // addr => memory address
     // wdata => write data (if applicable)
     // req_val => 1 to begin request
-    data_mem DataMemory(.load_data(dmem_resp_data),
-                        .cmd(dmem_req_rw),
-                        .addr(dmem_req_addr),
-                        .write_data(dmem_req_wdata),
-                        .enable(dmem_req_val));
+    // data_mem DataMemory(.load_data(dmem_resp_data),
+    //                     .cmd(dmem_req_rw),
+    //                     .addr(dmem_req_addr),
+    //                     .write_data(dmem_req_wdata),
+    //                     .enable(dmem_req_val));
 
 endmodule

@@ -4,7 +4,7 @@ module inst_mem(
   // outputs
   request_data,
   // inputs
-  fetch_addr, fetch_req, clk, rst
+  fetch_addr, fetch_req, clk
   );
 
   output reg [31:0] request_data;
