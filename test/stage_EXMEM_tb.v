@@ -22,7 +22,7 @@ initial begin
 		pc4, 
 		opcode1, 
 		opcode2, 
-		stageEXMEM.alu_out); 
+		stageEXMEM.alu_out_in); 
 
 	clk <= 1'b1; 
 	rst<= 1; 

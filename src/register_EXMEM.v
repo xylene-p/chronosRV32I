@@ -1,5 +1,4 @@
-module register_EXMEM(				// comment : not done;
-//output
+module register_EXMEM(
 	output reg [31:0] alu_out,
 	output reg [4:0] rs2_out,
 	output reg [4:0] instruction_rd_out,
@@ -9,7 +8,6 @@ module register_EXMEM(				// comment : not done;
 	output reg mem_request_write_out,
 	output reg mem_request_type_out,
 	output reg [2:0] wb_sel_out,
-//input
 	input [31:0] alu_out_in,
 	input [4:0] rs2_in,
 	input [4:0] instruction_rd_in,

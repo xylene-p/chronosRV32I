@@ -12,13 +12,13 @@ module register_IFID(
 	input en);
 
 always@(posedge clk)begin
-	if (rst != 0 && en == 1) begin
+	if (en == 1) begin
 		pc4_out <= pc4_in;
 		pc_out <= pc_in;
 		instruction_out <= instruction_in;
 		prediction_out <= prediction_in;
 	end
-	else begin
+	else if(rst == 0) begin
 		pc4_out = 0;
 		pc_out = 0;
 		instruction_out = 0;
@@ -26,3 +26,6 @@ always@(posedge clk)begin
 	end
 end
 endmodule
+
+
+

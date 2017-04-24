@@ -1,10 +1,7 @@
 module register_MEMWB(
-//outputs
 	output reg [31:0] wb_data_out,
 	output reg [4:0] instruction_rd_out,
-	//controls to WB
 	output reg register_write_enable_out,
-//inputs
 	input [31:0] wb_data_in,
 	input [4:0] instruction_rd_in,
 	input clk,

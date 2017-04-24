@@ -14,7 +14,7 @@ module hazard_detect(
 	input memReadIDEX);
 
 always @(*) begin
-	if (memReadIDEX && (regIDEX_rd == regIFID_rs1 ||  // if this true rest wont matter for immediate
+	if (memReadIDEX && (regIDEX_rd == regIFID_rs1 ||
 						 regIDEX_rd == regIFID_rs2 ||
 						 regIDEX_rd == regIFID_rd)) begin
 		kill_IF <= 1;
@@ -26,3 +26,5 @@ always @(*) begin
 		end
 end
 endmodule
+
+
