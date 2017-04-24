@@ -49,7 +49,7 @@ module chronosCore(
   end
 
   assign imem_req_addr = if_pc;
-  assign imem_req_val = !rst;
+  assign imem_req_val = rst;
 
   // PC Reg
   always @(posedge clk) begin
@@ -76,7 +76,7 @@ module chronosCore(
   always @(posedge clk) begin
     if (rst == 0) begin
         curr_pc4 <= 0;
-        inst <= `INST_NOP;
+        inst <= 0;
         pc <= 0;
     end
     else begin
@@ -118,7 +118,8 @@ module chronosCore(
                          .opcode(dcd_opcode),
                          .funct7(dcd_funct7),
                          .mem_req_write(dcd_mem_req_write),
-                         .mem_req_type(dcd_mem_req_type));
+                         .mem_req_type(dcd_mem_req_type),
+                         .inst(inst));
 
   register_file RegFile(.rs1_data(rf_rs1_data),
                         .rs2_data(rf_rs2_data),

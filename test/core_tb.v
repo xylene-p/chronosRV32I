@@ -37,8 +37,9 @@ module Core_tb();
     //   $display("Cycle %5d: pc=[%08x] inst_fetch=[%08x] rs1=[%x] rs2=[%x] rd=[%x]",
 	// 			   i, core.PCReg.q, core.Decoder.inst, core.rs1, core.rs2, core.rd);
         $display("Cycle %5d: [pc=%x, inst=%x] [op=%x, funct3=%x, funct7=%x, rs1=%x, rs2=%x, rd=%x, imm=%d]",
-                 i, core.CPU.pc, core.CPU.inst, core.CPU.dcd_opcode, core.CPU.Decoder.funct3, core.CPU.Decoder.funct7,
+                 i, core.CPU.if_pc, core.CPU.inst, core.CPU.dcd_opcode, core.CPU.Decoder.funct3, core.CPU.Decoder.funct7,
                  core.CPU.Decoder.rs1, core.CPU.Decoder.rs2, core.CPU.Decoder.rd, core.CPU.Decoder.imm12);
+        $display("\t     rs1 value=[%x] rs2 value=[%x]\n", core.CPU.rf_rs1_data, core.CPU.rf_rs2_data);
       i = i + 1;
       #(cycle);
     end
