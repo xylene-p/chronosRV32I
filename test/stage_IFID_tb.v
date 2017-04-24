@@ -19,7 +19,7 @@ initial begin
 	rst <= 1;
 	en <= 1; 
 
-	pc_sel_in = 3'b000;
+	pc_sel_in = 3'b111; //default 
 	#10 pc_sel_in = 3'b001; // change in next clock
 
 	#100
