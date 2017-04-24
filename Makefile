@@ -53,6 +53,10 @@ stageMEMWB:
 	$(VC) $(FLAGS)inc -o output/stage_MEMWB_tb.out $(MEMWBSOURCES) test/stage_MEMWB_tb.v
 	vvp output/stage_MEMWB_tb.out
 
+hazard_detect:
+	$(VC) $(FLAGS)inc -o output/hazard_detect_tb.out src/hazard_detect.v test/hazard_detect_tb.v
+	vvp output/hazard_detect_tb.out
+
 clean:
 	rm output/*.out
 	rm *.vcd
