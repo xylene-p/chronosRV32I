@@ -19,6 +19,10 @@ IDEXSOURCES= src/register_file.v \
 	src/mux_2_1.v \
 	src/register_IDEX.v 
 
+EXMEMSOURCES= \
+
+
+
 all: 
 
 stageIFID:
@@ -28,3 +32,13 @@ stageIFID:
 stageIDEX:
 	$(VC) $(FLAGS)inc -o output/stage_IDEX_tb.out $(IDEXSOURCES) test/stage_IDEX_tb.v
 	vvp output/stage_IDEX_tb.out
+
+stageEXMEM:
+	$(VC) $(FLAGS)inc -o output/stage_EXMEM_tb.out $(EXMEMSOURCES) test/stage_EXMEM_tb.v
+	vvp output/stage_EXMEM_tb.out; 
+
+stageMEMWB:
+
+clean:
+	rm output/*.out
+	rm *.vcd
