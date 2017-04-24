@@ -1,6 +1,4 @@
-// Chronos Register
-
-module register(q, valid, d, en, clk, rst);
+module register_pc(q, valid, d, en, clk, rst);
 
   output reg [31:0] q;
   output reg        valid;
@@ -13,7 +11,7 @@ module register(q, valid, d, en, clk, rst);
   end
 
   always @(posedge clk or negedge rst) begin
-      if (~rst) begin
+      if (rst == 0) begin
         q <= 32'b0;
         valid <= 1'b1;
       end

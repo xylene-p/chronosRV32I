@@ -9,7 +9,7 @@
 // alu_sel (output) ALU select
 // inst    (input)  instruction
 // rs*     (input)  regfile register value
-module alu_decode(
+module decode_alu(
     // outputs
     op1, op2, alu_sel,
     // inputs
@@ -47,7 +47,7 @@ module alu_decode(
                 case (funct3)
                     // sign-extended immediate
                     `F3_ADD, `F3_SLT, `F3_SLTU, `F3_XOR, `F3_OR, `F3_AND:
-                        op2 = s_ext_imm;
+                        op2 = sign_ext_imm;
                     // shift
                     `F3_SLL, `F3_SR:
                         op2 = shamt;

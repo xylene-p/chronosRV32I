@@ -14,7 +14,6 @@ module ChronosCore(
 
   wire [31:0]  fetch_addr, fetch_addr_next, request_data;
   wire         fetch_req, fetch_data_valid;
-  wire         kill;
 
   output wire [4:0] dcd_rs1, dcd_rs2, dcd_rd;
   output wire [11:0] dcd_imm12;
@@ -22,18 +21,44 @@ module ChronosCore(
   wire [4:0] rw_addr;
   wire [31:0] rw_data, rs1_data, rs2_data;
   wire [2:0] wb_sel;
-  wire en, en2, rw_en;
-  wire pc_sel;
+  wire en, rw_en;
 
-  // Decode - Internal Wires
-  wire [31:0] op1, op2;
+  // Decode Wires
+  wire [31:0] alu_op1, alu_op2;
   wire [4:0] alu_sel;
+
+  // Hazard Detect Unit Wires
+  wire [2:0] pc_sel;
+  wire IFID_write, mux_select, kill_IF, kill_DEC;
+  wire [4:0] regIDEX_rd;
+
+  // Branch Predictor Wires
+  wire [31:0] branch_predicted_target;
+  wire branch_prediction;
+
+  // IF/ID Output Wires
+  wire [31:0] pc4_IFID_out, inst_IFID_out;
+  wire pred_IFID_out;
+
+  // Branch Target Generator Wires
+  wire [31:0] branch_target;
+
+  // ID/EX Output Wires
+  wire [31:0] inst_IDEX_out, pc_IDEX_out, alu_out;
 
 
   /* Instruction Fetch Stage */
 
+  mux_4_1 PCMux(
+    .pc_next(fetch_addr),
+    .pc_sel(pc_sel),
+    .curr_pc4(fetch_addr_next),
+    .branch(branch_target),
+    .corr_pc4(inst_IFID_out),
+    .predicted_target(branch_predicted_target));
+
   // PC Register
-  register PCReg(
+  register_pc PCReg(
     .q(fetch_addr),
     .valid(fetch_req),
     .d(fetch_addr_next),
@@ -55,21 +80,30 @@ module ChronosCore(
     .out(fetch_addr_next),
     .in(fetch_addr));
 
-  // PC Mux
-  mux2to1 PCMux(
+  // Instruction Fetch Kill
+  mux_2_1 IFKill(
     .out(data),
     .in1(request_data),
     .in2(nop),
-    .sel(pc_sel));
+    .sel(kill_IF));
 
   /* IF/ID Stage */
 
-
+  register_IFID IFIDRegister(
+     .pc4_out(pc4_IFID_out),
+     .instruction_out(inst_IFID_out),
+     .prediction_out(pred_IFID_out),
+     .pc4_in(fetch_addr_next),
+     .instruction_in(request_data),
+     .prediction_in(branch_prediction),
+     .clk(clk),
+     .rst(rst),
+     .en(IFID_write));
 
   /* ID Stage */
 
   // Instruction Decoder
-  decode Decoder(
+  decode_control Decoder(
     .rs1(dcd_rs1),
     .rs2(dcd_rs2),
     .rd(dcd_rd),
@@ -83,53 +117,85 @@ module ChronosCore(
   // Hazard Detection Unit
 
   hazard_detect HDU(
-    .PC_write(en),
-    .IFID_write(en2), // TODO: wire this to IF/ID register
-    .Mux_select(pc_sel),
-    .inst_type(dcd_opcode),
-    .IFID_Reg_Rs1(dcd_rs1),
-    .IFID_Reg_Rs2(dcd_rs2),
-    .IFID_Reg_Rd(dcd_rd),
-    .IDEX_MemRead(mem_read_en),
-    .IDEX_Reg_Rd(idex_rd));
+    .pc_sel(pc_sel),
+    .IFID_write(IFID_write),
+    .mux_select(en),
+    .kill_IF(kill_IF),
+    .kill_DEC(kill_DEC),
+    .opcode(dcd_opcode),
+    .regIFID_rs1(dcd_rs1),
+    .regIFID_rs2(dcd_rs2),
+    .regIFID_rd(dcd_rd),
+    .regIDEX_rd(regIDEX_rd),
+    .memReadIDEX(idex_rd));
 
-  // General-Purpose Register File
-  regfile RegisterFile(
-    .rd1(rs1_data),
-    .rd2(rs2_data),
-    .rs1(dcd_rs1),
-    .rs2(dcd_rs2),
-    .rw_dest(rw_addr),
-    .rw_data(rw_data),
-    .rw_en(rw_en),
-    .clk(clk),
-    .rst(rst));
+  // General-Purpose Register Fileen2
+  register_file RegisterFile(
+    .read_data_1(rs1_data),
+    .read_data_2(rs2_data),
+    .rs_1(dcd_rs1),
+    .rs_2(dcd_rs2),
+    .register_write(rw_addr),
+    .write_data(rw_data),
+    .register_write_enable(rw_en));
 
-  alu_decode ALUDecoder(
+  decode_alu ALUDecoder(
     .op1(alu_op1),
     .op2(alu_op2),
     .alu_sel(alu_sel),
-    .inst(inst),
+    .inst(inst_IFID_out),
     .rs1(rs1_data),
     .rs2(rs2_data));
 
-    /* ID/EX Stage */
+  /* ID/EX Stage */
 
-    /* EX Stage */
+  register_IDEX IDEXRegister(
+    .pc4_out(),
+    .operand1_out(),
+    .operand2_out(),
+    .instruction_rd_out(),
+    .prediction_out(),
+    .register_write_enable_out(),
+    .mem_request_write_out(),
+    .mem_request_type_out(),
+    .alu_sel_out(),
+    .wb_sel_out(),
+    .IDEXRegRead_out(),
+    .IDEXMemRead(),
+    .clk(clk),
+    .rst(rst),
+    .en(),
+    .pc4_in(),
+    .operand1_in(),
+    .operand2_in(),
+    .instruction_rd_in(),
+    .prediction_in(),
+    .register_write_enable_in(),
+    .mem_request_write_in(),
+    .mem_request_type_in(),
+    .alu_sel_in(),
+    .wb_sel_in());
+
+  /* EX Stage */
+
+  // ALU MODULE HERE
+
+  branch_gen BranchGenerator(
+    .branch_target(branch_predicted_target),
+    .branch_taken(branch_taken),
+    .inst(inst_IDEX_out),
+    .pc(pc_IDEX_out),
+    .alu_out(alu_out));
+
+  /* EX/MEM Stage */
+
+  /* MEM Stage */
 
 
 
 
+  /* MEM/WB Stage*/
 
-    /* EX/MEM Stage */
-
-    /* MEM Stage */
-
-
-
-
-    /* MEM/WB Stage*/
-
-    /* WB Stage */
+  /* WB Stage */
 
 endmodule
