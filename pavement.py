@@ -25,10 +25,15 @@ def inst_mem():
 		sh('iverilog -Iinc -o output/inst_memTest.out src/inst_mem.v test/inst_mem_tb.v')
 		sh('vvp output/inst_memTest.out')
 		#sh('gtkwave core.vcd &')
+@task
+def stageIFIDtest():
+		sh('mkdir output')
+		sh('iverilog -Iinc -o output/stage_IFID_tb.out src/*.v test/stage_IFID_tb.v')
+		sh('vvp output/stage_IFID_tb.out')
 
 
 @task
-@needs(['clean', 'run', 'clean'])
+@needs(['clean', 'stageIFIDtest', 'clean'])
 def default():
 	pass
 

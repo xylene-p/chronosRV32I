@@ -66,18 +66,17 @@ module ChronosCore(
 
   /* Instruction Fetch Stage */
 
+
   mux_4_1 PCMux(
     .pc_next(fetch_addr),
     .pc_sel(pc_sel),
     .curr_pc4(fetch_addr_next),
     .branch(branch_target),
-    .corr_pc4(inst_IFID_out),
     .predicted_target(branch_predicted_target));
 
   // PC Register
   register_pc PCReg(
     .q(fetch_addr),
-    .valid(fetch_req),
     .d(fetch_addr_next),
     .en(en),
     .clk(clk),
@@ -86,11 +85,12 @@ module ChronosCore(
   // Instruction Memory
   inst_mem InstructionMemory(
     .request_data(request_data),
-    .fetch_data_valid(fetch_data_valid),
-    .fetch_addr(fetch_addr),
-    .fetch_req(fetch_req),
+    .address(fetch_addr),
     .clk(clk),
-    .rst(rst));
+    .rst(rst),
+    .wb_en(), 
+    .wb_address(), 
+    .wb_data();
 
   // PC + 4 Register
   add_const #(4) PCNext(

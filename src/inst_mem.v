@@ -2,37 +2,33 @@
 
 module inst_mem(
   // outputs
-  request_data, fetch_data_valid,
+  request_data,
   // inputs
-  fetch_addr, fetch_req, clk, rst
+  address, clk, rst, wb_en, wb_address, wb_data 
   );
 
   output reg [31:0] request_data;
-  output reg        fetch_data_valid;
-  input      [31:0] fetch_addr;
-  input             fetch_req;
+  input      [31:0] address;
   input             clk, rst;
+  input wb_en;
+  input [31:0] wb_address, wb_data;
+
 
   reg [31:0] memory [0:20];
-
   reg [29:0] inst_addr;
 
   initial begin
     $readmemh("beq.hex", memory);
   end
-
   always @(*) begin
-    inst_addr <= fetch_addr[31:2];
-    if (fetch_req == 1'b1) begin
-      request_data <= memory[inst_addr];
-      fetch_data_valid <= 1'b1;
-    end
-    else begin
-      request_data <= 32'hxxxxxxxx;
-      fetch_data_valid <= 1'b0;
-    end
+   // inst_addr <= address[31:2];
+    request_data <= memory[address[31:2]];
   end
 
-//  always@(posedge clk) writing back . i
+  always@(posedge clk) begin
+    if(wb_en== 1) begin
+      memory[wb_address] = wb_data; 
+      end
+  end
 
 endmodule

@@ -8,15 +8,12 @@ module mux_4_1(
     input [2:0] pc_sel,
     input [31:0] curr_pc4,
     input [31:0] branch,
-    input [31:0] corr_pc4,
     input [31:0] predicted_target);
 
     always @(*) begin
         case (pc_sel)
             `PCMUX_CURR_PC4:
                 pc_next <= curr_pc4;
-            `PCMUX_HAZARD:
-                pc_next <= pc_next;
             `PCMUX_BRANCH:
                 pc_next <= branch;
             `PCMUX_CORR_PC4:
@@ -27,5 +24,4 @@ module mux_4_1(
                 pc_next <= 0;
         endcase
     end
-
 endmodule
