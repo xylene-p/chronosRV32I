@@ -8,6 +8,7 @@ module mux_4_1(
     input [2:0] pc_sel,
     input [31:0] curr_pc4,
     input [31:0] branch,
+    input [31:0] corr_pc4,
     input [31:0] predicted_target);
 
     always @(*) begin
