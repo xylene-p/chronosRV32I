@@ -1,13 +1,11 @@
 module simulated_mem (
 	input clk,
-	input reset,
-
 	input [31:0] addr,
 	input [3:0] mask,
 	input enable,
-
 	input cmd,
 	input [31:0] write_data,
+	
 	output reg [31:0] load_data,
 	output reg valid
 );

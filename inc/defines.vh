@@ -8,8 +8,8 @@
 `define INST_NOP 32'h13
 
 // Program Counter Mux Select
-`define PCMUX_HAZARD    3'b000
-`define PCMUX_CURR_PC4  3'b001
+`define PCMUX_CURR_PC4  3'b000
+`define PCMUX_HAZARD    3'b001
 `define PCMUX_BRANCH    3'b010
 `define PCMUX_CORR_PC4  3'b011
 `define PCMUX_PRED_TGT  3'b100
