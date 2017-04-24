@@ -16,22 +16,17 @@ initial begin
 		stageIFID.instruction_out); 
 
 	clk <= 1'b1; 
-	rst <= 1; // active low 
+	rst <= 1;
 	en <= 1; 
 
 	pc_sel_in = 3'b000;
-	#10 pc_sel_in = 3'b001;
-		//mux_address_out = 32'h4; 
-	#10 //mux_address_out = 32'h8; 
-	#20 //mux_address_out = 32'hC; 
-	#30 // mux_address_out = 32'h10;
-	#40
-	#60
+	#10 pc_sel_in = 3'b001; // change in next clock
 
+	#100
 	$finish;
 end
 always begin
-	#5 clk = ~clk; // toggle every 5 clock delays
+	#5 clk = ~clk; 
 end
 
 wire [31:0] mux_address_out;
