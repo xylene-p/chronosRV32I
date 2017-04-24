@@ -8,18 +8,19 @@
 // reg_write_en (output) register write enable
 // wb_sel       (output) write back select
 // inst         (input)  instruction
-module decode(
+module decode_control(
     // outputs
     rs1, rs2, rd, imm12, reg_write_en, wb_sel, opcode, funct7,
+    mem_req_write, mem_req_type,
     // inputs
-    inst
-    );
+    inst);
 
     output [4:0] rs1, rs2, rd;
     output [11:0] imm12;
     output [6:0] opcode, funct7;
     output reg_write_en;
     output reg [2:0] wb_sel;
+    output mem_req_write, mem_req_type;
     input [31:0] inst;
     wire [2:0] funct3;
 
@@ -38,6 +39,12 @@ module decode(
                            opcode == `OPCODE_JAL ||
                            opcode == `OPCODE_JALR ||
                            opcode == `OPCODE_SYS);
+
+    assign memory_request = (opcode == `OPCODE_LOAD ||
+                             opcode == `OPCODE_STORE);
+
+	assign memory_request_type = (opcode == `OPCODE_STORE) ?
+	                             `MEM_REQ_WRITE : `MEM_REQ_READ;
 
     always @ (*) begin
         case (opcode)

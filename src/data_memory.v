@@ -1,11 +1,3 @@
-`define F3_LB		3'b000 /*Load Byte*/
-`define F3_LH		3'b001 /*Load Half Word*/
-`define F3_LW		3'b010 /*Load Word*/
-
-`define F3_SB		3'b000 /*Store Byte*/
-`define F3_SH		3'b001 /*Store Half Word*/
-`define F3_SW		3'b010 /*Store Word*/
-
 module data_memory (
 	input [31:0] instruction,
 	input [31:0] data,	//in from RS2
@@ -28,7 +20,7 @@ module data_memory (
 
 	always @ (*) begin
 		case (funct3)
-			`F3_SB: write_data_masked = data & 32'hFF;	
+			`F3_SB: write_data_masked = data & 32'hFF;
 			`F3_SH: write_data_masked = data & 32'hFFFF;
 			`F3_SW: write_data_masked = data & 32'hFFFFFFFF;
 			default: write_data_masked = 32'h0;
@@ -65,7 +57,7 @@ module data_memory (
 				2'b11: load_data_shifted = {24'b0, load_data[31:24]};
 				default: load_data_shifted = 32'b0;
 			endcase
-			
+
 			`F3_LH, `F3_LHU: case (addr[1:0])
 				2'b00: load_data_shifted = {16'b0, load_data[15:0]};
 				2'b10: load_data_shifted = {16'b0, load_data[31:16]};
