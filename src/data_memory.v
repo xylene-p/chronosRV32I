@@ -1,3 +1,5 @@
+`include "defines.vh"
+
 module data_memory (
 	input [31:0] instruction,
 	input [31:0] data,	//in from RS2

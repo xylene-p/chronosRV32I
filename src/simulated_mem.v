@@ -1,3 +1,5 @@
+`include "defines.vh"
+
 module simulated_mem (
 	input clk,
 	input reset,

@@ -1,9 +1,6 @@
-# root_dir = $(shell pwd)
-# IV_FLAGS = 
-
+root_dir = pwd
 VC=iverilog
 FLAGS=-I
-root=$(pwd)
 
 IFIDSOURCES= src/register_pc.v \
 src/inst_mem.v \
@@ -25,8 +22,13 @@ EXMEMSOURCES= src/alu.v \
 	src/branch_predictor.v \
 	src/add_const.v \
 	src/mux_2_1.v \
-	src/register_EXMEM.v \
+	src/register_EXMEM.v
 
+MEMWBSOURCES = src/writeback.v \
+	src/data_memory.v \
+	src/simulated_mem.v\
+	src/register_file.v \
+	src/register_MEMWB.v
 
 
 all: 
@@ -48,6 +50,8 @@ stageEXMEM:
 	vvp output/stage_EXMEM_tb.out
 
 stageMEMWB:
+	$(VC) $(FLAGS)inc -o output/stage_MEMWB_tb.out $(MEMWBSOURCES) test/stage_MEMWB_tb.v
+	vvp output/stage_MEMWB_tb.out
 
 clean:
 	rm output/*.out
