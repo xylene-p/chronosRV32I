@@ -33,4 +33,6 @@ module inst_mem(
     end
   end
 
+//  always@(posedge clk) writing back . i
+
 endmodule

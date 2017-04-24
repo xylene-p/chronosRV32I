@@ -8,7 +8,7 @@ import paver.doctools
 def run():
 	if os.name == 'nt':
 		sh('mkdir output')
-		sh('iverilog -Iinc -o output/coreTest.out src/*.v test/*.v')
+		sh('iverilog -Iinc -o output/coreTest.out src/*.v test/core_tb.v')
 		sh('vvp output/coreTest.out')
 		sh('gtkwave core.vcd &')
 
@@ -17,6 +17,14 @@ def clean():
 	sh('rm output/*')
 	sh('rmdir output')
 
+
+@task 
+def inst_mem():
+	if os.name == 'nt':
+		sh('mkdir output')
+		sh('iverilog -Iinc -o output/inst_memTest.out src/inst_mem.v test/inst_mem_tb.v')
+		sh('vvp output/inst_memTest.out')
+		#sh('gtkwave core.vcd &')
 
 
 @task
