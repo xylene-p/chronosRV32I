@@ -14,7 +14,10 @@ src/mux_4_1.v
 IDEXSOURCES= src/register_file.v \
 	src/decode_alu.v \
 	src/decode_control.v \
-	src/hazard_detect.v
+	src/hazard_detect.v \
+	src/decode_mux.v \
+	src/mux_2_1.v \
+	src/register_IDEX.v 
 
 all: 
 

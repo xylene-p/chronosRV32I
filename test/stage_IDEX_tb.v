@@ -1,35 +1,46 @@
+`timescale 1ns/1ns
+
+`include "defines.vh"
+
+
 module stage_IDEX(); 
 reg clk, rst, en; 
-reg [31:0] instruction;
-reg [31:0] pc4;  
+reg [31:0] instruction, pc, pc4, nop;
+
 initial begin
 
 	$dumpfile("idex_dump.vcd"); 
 	$dumpvars();
 	$display("test for IDEX stage, are the correct values latching"); 
 
-    $display("ALU DECODER"); 
-	$monitor("ALU DECODER\nINST:[%h] op1:[%h] op2:[%h] alu_sel:[%h]\nCONTROL DECODER\nOPCODE:[%b] RD:[%b] wb_sel:[%b]", 
-        instruction,
-        alu_decoder.op1,
-        alu_decoder.op2,
-        alu_decoder.alu_sel,
-        control_decoder.opcode,
-        control_decoder.rd,
-        control_decoder.wb_sel); 
+	$monitor("PC+4:[%h] PC:[%h] INST:[%h] op1:[%h] op2:[%h] RD:[%b] wb_sel:[%b]", 
+        stageIDEX.pc4_out,
+        stageIDEX.pc_out, 
+        stageIDEX.inst_out,
+        stageIDEX.operand1_out,
+        stageIDEX.operand2_out,
+        stageIDEX.instruction_rd_out,
+        stageIDEX.wb_sel_out); 
 
 	clk <= 1'b1; 
 	rst<= 1; 
 	en<=1; 
+    nop <= `INST_NOP;
 
-    pc4 = 32'h4; 
+    pc4 = 32'h4;
+    pc = 32'h0;  
 	instruction = 32'h00000013;
-    #10 pc4 = 32'h8; 
+    #10 pc4 = 32'h8;
+    #10 pc = 32'h4;  
 	#10 instruction = 32'h00200513;
     #20 pc4 = 32'hc; 
+    #20 pc = 32'h8; 
 	#20 instruction = 32'h00200593;
 	#100
 	$finish; 
+end
+always begin
+    #5 clk = ~clk; 
 end
 
 wire [31:0] data1; 
@@ -78,15 +89,50 @@ hazard_detect HDU(
     .regIDEX_rd(0),
     .memReadIDEX(0));
 
-mux_2_1 IDKill(
-    .out(),
-    .in1(),
-    .in2(nop),
-    .sel(kill_DEC));
+wire [4:0] rs2_mux, rd_mux;
+wire reg_write_en_mux, mem_req_write_mux, mem_req_type_mux;
+wire [2:0] wb_sel_mux; 
+decode_mux mux_decode(
+    .rs2_out(rs2_mux),
+    .rd_out(rd_mux),
+    .reg_write_en_out(reg_write_en_mux), 
+    .wb_sel_out(wb_sel_mux), 
+    .mem_req_write_out(mem_req_write_mux), 
+    .mem_req_type_out(mem_req_type_mux),
+    .rs2_in(rs2), 
+    .rd_in(rd), 
+    .reg_write_en_in(reg_write_en), 
+    .wb_sel_in(wb_sel), 
+    .mem_req_write_in(mem_req_write), 
+    .mem_req_type_in(mem_req_type),
+    .kill_DEC(ID_kill),
+    .nop(nop));
 
+wire [3:0] alu_sel_mux; 
+mux_2_1 #(4) alu_decode_mux(
+    .out(alu_sel_mux),
+    .in1(alu_sel),
+    .in2(nop[3:0]),
+    .sel(ID_kill));
 
-
-
-
-
+register_IDEX stageIDEX(
+    .clk(clk),
+    .rst(rst),
+    .en(en),
+    .pc4_in(pc4),
+    .pc_in(pc),
+    .inst_in(instruction),
+    .operand1_in(op1),
+    .operand2_in(op2),
+    .instruction_rd_in(rd_mux),
+    .rs2_in(rs2_mux),
+    .prediction_in(0),
+    //controls to WB
+    .register_write_enable_in(reg_write_en_mux),
+    //controls to MEM
+    .mem_request_write_in(mem_req_write_mux),
+    .mem_request_type_in(mem_req_type_mux),
+    //control to EXE
+    .alu_sel_in(alu_sel_mux),
+    .wb_sel_in(wb_sel_mux)); 
 endmodule 

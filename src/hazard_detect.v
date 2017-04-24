@@ -23,5 +23,6 @@ always @(*) begin
 	else begin
 		kill_IF <= 0;
 		kill_DEC <= 0;
+		end
 end
 endmodule
