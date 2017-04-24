@@ -71,5 +71,5 @@ register_IFID stageIFID(
     .prediction_in(0),
     .clk(clk),
     .rst(rst),
-    .en(en)); // IFIDWRITE FROM HAZARD 
+    .en(en));
 endmodule 
