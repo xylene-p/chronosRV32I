@@ -28,42 +28,46 @@ initial begin
 	IFID_rs1 <= instruction[19:15]; 
 	IFID_rs2 <= instruction[24:20]; 
 	IFID_rd <= instruction[11:7]; 
-
+	#5
 	if(ID_KILL == 0)begin
-		#10 IDEX_rd <= IFID_rd; 
-		#10 memReadIDEX_in = 1; 
+		IDEX_rd <= IFID_rd; 
+		memReadIDEX_in = 1; 
 	end
 
 	//instruction 1
-	#10 instruction <= 32'h00200513;
-	#10 opcode_in <= instruction[6:0]; 
-	#10 IFID_rs1 <= instruction[19:15]; 
-	#10 IFID_rs2 <= instruction[24:20]; 
-	#10 IFID_rd <= instruction[11:7];
+	instruction <= 32'h00200513;
+	opcode_in <= instruction[6:0]; 
+	IFID_rs1 <= instruction[19:15]; 
+	IFID_rs2 <= instruction[24:20]; 
+	IFID_rd <= instruction[11:7];
+	#5
 	if(ID_KILL == 0)begin
-		#20 IDEX_rd <= IFID_rd; 
-		#20 memReadIDEX_in = 1; 
+		IDEX_rd <= IFID_rd; 
+		memReadIDEX_in = 1; 
 	end
+
 	//instruction 2
-	#20 instruction <= 32'h00200593;
-	#20 opcode_in <= instruction[6:0]; 
-	#20 IFID_rs1 <= instruction[19:15]; 
-	#20 IFID_rs2 <= instruction[24:20]; 
-	#20 IFID_rd <= instruction[11:7];
+	instruction <= 32'h00200593;
+	opcode_in <= instruction[6:0]; 
+	IFID_rs1 <= instruction[19:15]; 
+	IFID_rs2 <= instruction[24:20]; 
+	IFID_rd <= instruction[11:7];
+	#5
 	if(ID_KILL == 0)begin
-		#30 IDEX_rd <= IFID_rd; 
-		#30 memReadIDEX_in = 1; 
+		IDEX_rd <= IFID_rd; 
+		memReadIDEX_in = 1; 
 	end
 
 	//instruction 3
-	#30 instruction <= 32'h00b50463;
-	#30 opcode_in <= instruction[6:0]; 
-	#30 IFID_rs1 <= instruction[19:15]; 
-	#30 IFID_rs2 <= instruction[24:20]; 
-	#30 IFID_rd <= instruction[11:7];
+	instruction <= 32'h00b50463;
+	opcode_in <= instruction[6:0]; 
+	IFID_rs1 <= instruction[19:15]; 
+	IFID_rs2 <= instruction[24:20]; 
+	IFID_rd <= instruction[11:7];
+	#5
 	if(ID_KILL == 0)begin
-		#40 IDEX_rd <= IFID_rd; 
-		#40 memReadIDEX_in = 1; 
+		IDEX_rd <= IFID_rd; 
+		memReadIDEX_in = 1; 
 	end
 
 	#50
