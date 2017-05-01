@@ -37,6 +37,10 @@ core:
 	$(VC) $(FLAGS)inc -o output/coreTest.out src/*.v test/core_tb.v
 	vvp output/coreTest.out
 
+chronos_core:
+	$(VC) $(FLAGS)inc -o output/chronos_core.out src/*.v
+	vvp output/chronos_core.out
+
 stageIFID:
 	$(VC) $(FLAGS)inc -o output/stage_IFID_tb.out $(IFIDSOURCES) test/stage_IFID_tb.v
 	vvp output/stage_IFID_tb.out

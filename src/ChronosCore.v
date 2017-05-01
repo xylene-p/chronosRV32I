@@ -1,11 +1,14 @@
 module ChronosCore(
 	input clk,
 	input rst, 
-	input en); 
+	input en, 
+	input [31:0] nop, 
+	input [2:0] pc_sel_in); 
 
 
 
 /// IFID STAGE
+// PC_sel ? from where 
 wire [31:0] mux_address_out; 
 mux_4_1 PCMUX(
     .pc_next(mux_address_out),
@@ -58,19 +61,19 @@ register_IFID stageIFID(
 
 // IDEX STAGE  				//pull data from IFID register 
 wire [4:0] rs1_wire, rs2_wire, rd_wire; 
-wire [6:0] opcode; 
-wire reg_write_en, mem_req_write, mem_req_type; 
-wire [2:0] wb_sel; 
+wire [6:0] opcode_wire; 
+wire reg_write_en_wire, mem_req_write_wire, mem_req_type_wire; 
+wire [2:0] wb_sel_wire; 
 decode_control control_decoder(
 	//outputs 
     .rs1(rs1_wire),
     .rs2(rs2_wire),
     .rd(rd_wire),
-    .opcode(opcode),
-    .reg_write_en(reg_write_en),
-    .wb_sel(wb_sel),
-    .mem_req_write(mem_req_write),
-    .mem_req_type(mem_req_type),
+    .opcode(opcode_wire),
+    .reg_write_en(reg_write_en_wire),
+    .wb_sel(wb_sel_wire),
+    .mem_req_write(mem_req_write_wire),
+    .mem_req_type(mem_req_type_wire),
     //inputs
     .inst(instruction_wire));  // from IFID
 
@@ -108,11 +111,10 @@ hazard_detect HDU(
     .regIFID_rs1(rs1_wire),
     .regIFID_rs2(rs2_wire),
     .regIFID_rd(rd_wire),
-    .regIDEX_rd(0), //end of the IDEX latch
-    .memReadIDEX(0)); //end of the IDEX latch
+    .regIDEX_rd(IDEXRegRead_out_IDEX_wire),
+    .memReadIDEX(IDEXMemRead_IDEX_wire));
 
 
-//FUCK 
 wire [4:0] rs2_mux, rd_mux;
 wire reg_write_en_mux, mem_req_write_mux, mem_req_type_mux;
 wire [2:0] wb_sel_mux; 
@@ -125,33 +127,74 @@ decode_mux mux_decode(
     .mem_req_write_out(mem_req_write_mux), 
     .mem_req_type_out(mem_req_type_mux),
     //inputs 
-    .rs2_in(rs2), 
-    .rd_in(rd), 
-    .reg_write_en_in(reg_write_en), 
-    .wb_sel_in(wb_sel), 
-    .mem_req_write_in(mem_req_write), 
-    .mem_req_type_in(mem_req_type),
-    .kill_DEC(ID_kill),
+    .rs2_in(rs2_wire), 
+    .rd_in(rd_wire), 
+    .reg_write_en_in(reg_write_en_wire), 
+    .wb_sel_in(wb_sel_wire), 
+    .mem_req_write_in(mem_req_write_wire), 
+    .mem_req_type_in(mem_req_type_wire),
+    .kill_DEC(ID_kill_wire),
     .nop(nop));
 
 wire [3:0] alu_sel_mux; 
 mux_2_1 #(4) alu_decode_mux(
     .out(alu_sel_mux),
-    .in1(alu_sel),
+    .in1(alu_sel_wire),
     .in2(nop[3:0]),
     .sel(ID_kill));
 
+
+wire [31:0] pc4_out_IDEX_wire;
+wire [31:0] pc_out_IDEX_wire;
+wire [31:0] inst_out_IDEX_wire;
+wire [31:0] operand1_out_IDEX_wire;
+wire [31:0] operand2_out_IDEX_wire;
+wire [4:0] instruction_rd_out_IDEX_wire;
+wire prediction_out_IDEX_wire;
+//controls to WB
+wire register_write_enable_out_IDEX_wire;
+//controls to MEM
+wire mem_request_write_out_IDEX_wire;
+wire mem_request_type_out_IDEX_wire;
+//control to EXE
+wire [3:0] alu_sel_out_IDEX_wire;
+wire [2:0] wb_sel_out_IDEX_wire;
+//HazardControlUnit outputs
+wire [4:0] IDEXRegRead_out_IDEX_wire;
+wire IDEXMemRead_IDEX_wire;
+wire [4:0] rs2_out_IDEX_wire;
 register_IDEX stageIDEX(
+	//outputs
+	.pc4_out(pc4_out_IDEX_wire),
+	.pc_out(pc_out_IDEX_wire),
+	.inst_out(inst_out_IDEX_wire),
+	.operand1_out(operand1_out_IDEX_wire),
+	.operand2_out(operand2_out_IDEX_wire),
+	.instruction_rd_out(instruction_rd_out_IDEX_wire),
+	.prediction_out(prediction_out_IDEX_wire),
+	//controls to WB
+	.register_write_enable_out(register_write_enable_out_IDEX_wire),
+	//controls to MEM
+	.mem_request_write_out(mem_request_write_out_IDEX_wire),
+	.mem_request_type_out(mem_request_type_out_IDEX_wire),
+	//control to EXE
+	.alu_sel_out(alu_sel_out_IDEX_wire),
+	.wb_sel_out(wb_sel_out_IDEX_wire),
+	//HazardControlUnit outputs
+	.IDEXRegRead_out(IDEXRegRead_out_IDEX_wire),
+	.IDEXMemRead(IDEXMemRead_IDEX_wire),
+	.rs2_out(rs2_out_IDEX_wire),
+	//inputs 
     .clk(clk),
     .rst(rst),
     .en(en),
-    .pc4_in(pc4),
-    .pc_in(pc),
-    .inst_in(instruction),
-    .operand1_in(op1),
-    .operand2_in(op2),
-    .instruction_rd_in(rd_mux),
-    .rs2_in(rs2_mux),
+    .pc4_in(pc4_out_wire),
+    .pc_in(pc_out_wire),
+    .inst_in(instruction_wire),
+    .operand1_in(op1_wire),
+    .operand2_in(op2_wire),
+    .instruction_rd_in(rd_wire),
+    .rs2_in(rs2_wire),
     .prediction_in(0),
     //controls to WB
     .register_write_enable_in(reg_write_en_mux),
@@ -161,5 +204,128 @@ register_IDEX stageIDEX(
     //control to EXE
     .alu_sel_in(alu_sel_mux),
     .wb_sel_in(wb_sel_mux)); 
+
+//EXMEM STAGE
+wire [31:0] alu_out_wire; 
+alu _alu(
+	.alu_out(alu_out_wire),
+	.op1(operand1_out_IDEX_wire),
+	.op2(operand2_out_IDEX_wire),
+	.alu_sel(alu_sel_out_IDEX_wire)); 
+
+wire [31:0] branch_target_wire;
+wire branch_taken_wire;
+branch_gen _branch_gen(
+	.branch_target(branch_target_wire), 
+	.branch_taken(branch_taken_wire), 
+	.inst(inst_out_IDEX_wire),
+	.pc(pc4_out_IDEX_wire),
+	.alu_out(alu_out_wire)); 
+
+branch_predictor _branch_predictor(
+	.clk(clk),
+	.rst(rst), 
+	.correct_target(), 
+	.correct_pc4(), 
+	.current_pc4()); 
+
+wire [31:0] PC44_out_wire;
+add_const #(4) pc4Next(
+	.out(PC44_out_wire),
+	.in(pc4_out_IDEX_wire)); 
+
+wire [31:0] ALUOUT; 
+mux_2_1 #(32) _wb_sel_mux(
+	.out(ALUOUT), 
+	.in1(PC44_out_wire),
+	.in2(alu_out_wire),
+	.sel(1));
+
+wire [31:0] alu_out_EXMEM_wire;
+wire [4:0] rs2_out_EXMEM_wire;
+wire [4:0] instruction_rd_out_EXMEM_wire;
+//controls to WB
+wire register_write_enable_out_EXMEM_wire;
+//controls to MEM
+wire mem_request_write_out_EXMEM_wire;
+wire mem_request_type_out_EXMEM_wire;
+wire [2:0] wb_sel_out_EXMEM_wire;
+register_EXMEM stageEXMEM(
+	//outputs
+	.alu_out(alu_out_EXMEM_wire),
+	.rs2_out(rs2_out_EXMEM_wire),
+	.instruction_rd_out(instruction_rd_out_EXMEM_wire),
+	//controls to WB
+	.register_write_enable_out(register_write_enable_out_EXMEM_wire),
+	//controls to MEM
+	.mem_request_write_out(mem_request_write_out_EXMEM_wire),
+	.mem_request_type_out(mem_request_type_out_EXMEM_wire),
+	.wb_sel_out(wb_sel_out_EXMEM_wire),
+	//inputs -- 
+	.alu_out_in(ALUOUT),
+	.rs2_in(rs2_out_IDEX_wire),
+	.instruction_rd_in(instruction_rd_out_IDEX_wire),
+	.clk(clk),
+	.rst(rst),
+	.en(en),
+	//controls to WB
+	.register_write_enable_in(register_write_enable_out_IDEX_wire),
+	//controls to MEM
+	.mem_request_write_in(mem_request_write_out_IDEX_wire),
+	.mem_request_type_in(mem_request_type_out_IDEX_wire),
+	.wb_sel_in(wb_sel_out_IDEX_wire)
+	); 
+
+//MEMWB stage
+
+writeback _writeback(
+	.output_data(), 
+	.out_data_mem(), 
+	.out_pc4(), 
+	.out_alu(), 
+	.wb_sel()); 
+
+
+data_memory _data_memory(
+	.memory_addr(), 
+	.write_data(), 
+	.write_mask(), 
+	.output_data(),
+	.instruction(), 
+	.data(), 
+	.addr(), 
+	.load_data()); 
+
+simulated_mem _simulated_mem(
+	.load_data(), 
+	.valid(),
+	.clk(),
+	.reset(), 
+	.addr(), 
+	.mask(), 
+	.enable(), 
+	.cmd(), 
+	.write_data());
+
+
+wire [31:0] wb_data_out_MEMWB_wire;
+wire [4:0] instruction_rd_out_MEMWB_wire;
+wire register_write_enable_out_MEMWB_wire;
+register_MEMWB _register_MEMWB(
+	.wb_data_out(wb_data_out_MEMWB_wire), 
+	.instruction_rd_out(instruction_rd_out_MEMWB_wire), 
+	.register_write_enable_out(register_write_enable_out_MEMWB_wire), 
+	.wb_data_in(), 
+	.instruction_rd_in(), 
+	.clk(clk), 
+	.rst(rst), 
+	.en(en),
+	.register_write_enable_in(register_write_enable_out_EXMEM_wire));
+
+register_file _register_file(
+	.register_write(), 
+	.write_data(), 
+	.register_write_enable()); 
+
 
 endmodule 
