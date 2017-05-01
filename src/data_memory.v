@@ -6,7 +6,7 @@ module data_memory (
 	input [31:0] addr,	//in from alu_out
 
 	output [31:0] memory_addr,
-
+	output reg cmd; 
 	output reg [31:0] write_data,
 	output reg [3:0] write_mask,
 

@@ -258,8 +258,8 @@ register_EXMEM stageEXMEM(
 	//controls to WB
 	.register_write_enable_out(register_write_enable_out_EXMEM_wire),
 	//controls to MEM
-	.mem_request_write_out(mem_request_write_out_EXMEM_wire),
-	.mem_request_type_out(mem_request_type_out_EXMEM_wire),
+	.mem_request_write_out(mem_request_write_out_EXMEM_wire), //
+	.mem_request_type_out(mem_request_type_out_EXMEM_wire), ///
 	.wb_sel_out(wb_sel_out_EXMEM_wire),
 	//inputs -- 
 	.alu_out_in(ALUOUT),
@@ -286,27 +286,33 @@ writeback _writeback(
 	.wb_sel(wb_sel_out_EXMEM_wire)); 
 
 
-wire [31:0] data_memory_output_data_wire; 
+wire [31:0] data_memory_output_data_wire;
+wire [31:0] memory_addr_wire;
+wire [31:0] write_data_wire;//
+wire [3:0] write_mask_wire;
+wire cmd_wire;   
 data_memory _data_memory(
-	.memory_addr(), 
-	.write_data(), 
-	.write_mask(), 
-	.output_data(),
+	.memory_addr(memory_addr_wire), //output
+	.write_data(write_data_wire), 
+	.write_mask(write_mask_wire), 
+	.output_data(data_memory_output_data_wire),
 	.instruction(), 
 	.data(rs2_out_EXMEM_wire), 
 	.addr(alu_out_EXMEM_wire), 
-	.load_data()); 
+	.load_data(load_data_wire)); 
 
+wire [31:0] load_data_wire;
+wire valid_wire; //
 simulated_mem _simulated_mem(
-	.load_data(), 
-	.valid(),
-	.clk(),
-	.reset(), 
-	.addr(), 
-	.mask(), 
-	.enable(), 
-	.cmd(), 
-	.write_data());
+	.load_data(load_data_wire), 
+	.valid(valid_wire),
+	.clk(clk),
+	.reset(rst), 
+	.addr(memory_addr_wire), 
+	.mask(write_mask_wire), 
+	.enable(en), 
+	.cmd(cmd_wire), 
+	.write_data(write_data_wire)); //
 
 
 wire [31:0] wb_data_out_MEMWB_wire;
