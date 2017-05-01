@@ -86,9 +86,9 @@ register_file reg_file(
     //inputs
     .rs_1(rs1_wire), 
     .rs_2(rs2_wire),
-    .register_write(0), // need to come from wb stage
-    .write_data(0), 
-    .register_write_enable(0)); 
+    .register_write(instruction_rd_out_MEMWB_wire), // need to come from wb stage
+    .write_data(wb_data_out_MEMWB_wire), 
+    .register_write_enable(register_write_enable_out_MEMWB_wire)); 
 
 wire[3:0] alu_sel_wire;
 wire[31:0] op1_wire, op2_wire; 
@@ -278,22 +278,23 @@ register_EXMEM stageEXMEM(
 
 //MEMWB stage
 
+wire [31:0] output_data_mux_wire 
 writeback _writeback(
-	.output_data(), 
-	.out_data_mem(), 
-	.out_pc4(), 
-	.out_alu(), 
-	.wb_sel()); 
+	.output_data(output_data_mux_wire), 
+	.out_data_mem(data_memory_output_data_wire), 
+	.out_alu(alu_out_EXMEM_wire), 
+	.wb_sel(wb_sel_out_EXMEM_wire)); 
 
 
+wire [31:0] data_memory_output_data_wire; 
 data_memory _data_memory(
 	.memory_addr(), 
 	.write_data(), 
 	.write_mask(), 
 	.output_data(),
 	.instruction(), 
-	.data(), 
-	.addr(), 
+	.data(rs2_out_EXMEM_wire), 
+	.addr(alu_out_EXMEM_wire), 
 	.load_data()); 
 
 simulated_mem _simulated_mem(
@@ -315,17 +316,20 @@ register_MEMWB _register_MEMWB(
 	.wb_data_out(wb_data_out_MEMWB_wire), 
 	.instruction_rd_out(instruction_rd_out_MEMWB_wire), 
 	.register_write_enable_out(register_write_enable_out_MEMWB_wire), 
-	.wb_data_in(), 
-	.instruction_rd_in(), 
+	.wb_data_in(output_data_mux_wire), 
+	.instruction_rd_in(instruction_rd_out_EXMEM_wire), 
 	.clk(clk), 
 	.rst(rst), 
 	.en(en),
 	.register_write_enable_in(register_write_enable_out_EXMEM_wire));
 
-register_file _register_file(
-	.register_write(), 
-	.write_data(), 
-	.register_write_enable()); 
+
+// register_file _register_file(
+// 	.register_write(),  
+// 	.write_data(), 
+// 	.register_write_enable()); 
+
+
 
 
 endmodule 
