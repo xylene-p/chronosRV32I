@@ -31,20 +31,16 @@ module chronosCore(
 
   //======= Instruction Fetch =======//
   initial begin
-    pc_sel = `PCMUX_CURR_PC4;
+    if_pc <= 0;
   end
 
   // PCMux
   always @(*) begin
     case (pc_sel)
-        `PCMUX_CURR_PC4:
-            if_pc = curr_pc4;
-        `PCMUX_BRANCH:
-            if_pc = branch_target;
-        `PCMUX_CORR_PC4:
-            if_pc = corr_pc4;
-        `PCMUX_PRED_TGT:
-            if_pc = branch_predicted_target;
+        `PCMUX_STALL:
+            if_pc <= pc;
+        default:
+            if_pc <= pc + 4;
     endcase
   end
 
@@ -55,9 +51,11 @@ module chronosCore(
   always @(posedge clk) begin
     if (rst == 0) begin
         pc <= 0;
+        pc_sel <= `PCMUX_STALL;
     end
     else begin
         pc <= if_pc;
+        pc_sel <= `PCMUX_CURR_PC4;
     end
   end
 
