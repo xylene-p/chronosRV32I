@@ -61,7 +61,7 @@ register_IFID stageIFID(
 
 // IDEX STAGE  				//pull data from IFID register 
 wire [4:0] rs1_wire, rs2_wire, rd_wire; 
-wire [6:0] opcode_wire; 
+wire [6:0] opcode_wire, funct7_wire; 
 wire reg_write_en_wire, mem_req_write_wire, mem_req_type_wire; 
 wire [2:0] wb_sel_wire; 
 decode_control control_decoder(
@@ -244,6 +244,7 @@ mux_2_1 #(32) _wb_sel_mux(
 wire [31:0] alu_out_EXMEM_wire;
 wire [4:0] rs2_out_EXMEM_wire;
 wire [4:0] instruction_rd_out_EXMEM_wire;
+wire [31:0] instruction_out_EXMEM_wire; 
 //controls to WB
 wire register_write_enable_out_EXMEM_wire;
 //controls to MEM
@@ -255,6 +256,7 @@ register_EXMEM stageEXMEM(
 	.alu_out(alu_out_EXMEM_wire),
 	.rs2_out(rs2_out_EXMEM_wire),
 	.instruction_rd_out(instruction_rd_out_EXMEM_wire),
+	.instruction_out(instruction_out_EXMEM_wire),
 	//controls to WB
 	.register_write_enable_out(register_write_enable_out_EXMEM_wire),
 	//controls to MEM
@@ -265,6 +267,7 @@ register_EXMEM stageEXMEM(
 	.alu_out_in(ALUOUT),
 	.rs2_in(rs2_out_IDEX_wire),
 	.instruction_rd_in(instruction_rd_out_IDEX_wire),
+	.instruction_in(inst_out_IDEX_wire), 
 	.clk(clk),
 	.rst(rst),
 	.en(en),
@@ -278,7 +281,7 @@ register_EXMEM stageEXMEM(
 
 //MEMWB stage
 
-wire [31:0] output_data_mux_wire 
+wire [31:0] output_data_mux_wire;
 writeback _writeback(
 	.output_data(output_data_mux_wire), 
 	.out_data_mem(data_memory_output_data_wire), 
@@ -296,7 +299,7 @@ data_memory _data_memory(
 	.write_data(write_data_wire), 
 	.write_mask(write_mask_wire), 
 	.output_data(data_memory_output_data_wire),
-	.instruction(), 
+	.instruction(instruction_out_EXMEM_wire), 
 	.data(rs2_out_EXMEM_wire), 
 	.addr(alu_out_EXMEM_wire), 
 	.load_data(load_data_wire)); 
