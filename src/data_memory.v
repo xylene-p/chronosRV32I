@@ -1,12 +1,18 @@
+<<<<<<< HEAD
 // Data Memory
 
 module memory_controller (
+=======
+`include "defines.vh"
+
+module data_memory (
+>>>>>>> 4002fce60f4e14ebde5ff3e070288a770b7d939d
 	input [31:0] instruction,
-	input [31:0] data,	//in from RS2
+	input [4:0] data,	//in from RS2
 	input [31:0] addr,	//in from alu_out
 
 	output [31:0] memory_addr,
-
+	output reg cmd,
 	output reg [31:0] write_data,
 	output reg [3:0] write_mask,
 

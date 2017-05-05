@@ -50,9 +50,6 @@ def two_bit_predict(history, init_state):
     return curr_state
 
 
-def Q(inst, state, action):
-    pass
-
 def main():
     # Generate random table of direction histories
     direction_table = np.random.randint(255, dtype=int, size=1000)

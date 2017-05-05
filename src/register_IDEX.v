@@ -1,5 +1,4 @@
-module register_IDEX(				// comment : Not done
-//output
+module register_IDEX(
 	output reg [31:0] pc4_out,
 	output reg [31:0] pc_out,
 	output reg [31:0] inst_out,
@@ -19,7 +18,6 @@ module register_IDEX(				// comment : Not done
 	output reg [4:0] IDEXRegRead_out,
 	output reg IDEXMemRead,
 	output reg [4:0] rs2_out,
-//inputs
 	input clk,
 	input rst,
 	input en,
@@ -48,6 +46,7 @@ always@(posedge clk) begin
 		pc_out = 0;
 		inst_out = 0;
 		instruction_rd_out = 0;
+		rs2_out = 0; 
 		//signal to hazard control unit
 		IDEXMemRead = 0;
 		IDEXRegRead_out = 0;
@@ -61,12 +60,14 @@ always@(posedge clk) begin
 		alu_sel_out = 0;
 		wb_sel_out = 3'b0;
 	end
-	else if (en) begin
+	else if (en == 1) begin
 		operand2_out <= operand2_in;
 		operand1_out <= operand1_in;
 		pc4_out <= pc4_in;
-		pc_out <= pc4_in;
+		pc_out <= pc_in;
 		instruction_rd_out <= instruction_rd_in;
+		inst_out <= inst_in; 
+		rs2_out <= rs2_in; 
 		//signal to hazard control unit
 		IDEXMemRead = 1;
 		IDEXRegRead_out <= instruction_rd_in;

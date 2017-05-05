@@ -16,7 +16,7 @@ module mux_4_1(
             `PCMUX_CURR_PC4:
                 pc_next <= curr_pc4;
             `PCMUX_HAZARD:
-                pc_next <= pc_next;
+                pc_next <= curr_pc4 - 4;
             `PCMUX_BRANCH:
                 pc_next <= branch;
             `PCMUX_CORR_PC4:
@@ -27,5 +27,4 @@ module mux_4_1(
                 pc_next <= 0;
         endcase
     end
-
 endmodule

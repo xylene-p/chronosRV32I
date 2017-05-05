@@ -1,18 +1,18 @@
-module register_EXMEM(				// comment : not done;
-//output
+module register_EXMEM(
 	output reg [31:0] alu_out,
 	output reg [4:0] rs2_out,
 	output reg [4:0] instruction_rd_out,
+	output reg [31:0] instruction_out, 
 	//controls to WB
 	output reg register_write_enable_out,
 	//controls to MEM
 	output reg mem_request_write_out,
 	output reg mem_request_type_out,
 	output reg [2:0] wb_sel_out,
-//input
 	input [31:0] alu_out_in,
 	input [4:0] rs2_in,
 	input [4:0] instruction_rd_in,
+	input [31:0] instruction_in,
 	input clk,
 	input rst,
 	input en,
@@ -24,10 +24,11 @@ module register_EXMEM(				// comment : not done;
 	input [2:0] wb_sel_in);
 
 always@(posedge clk) begin
-	if(~rst)begin
+	if(rst == 0)begin
 		alu_out = 0;
 		rs2_out = 0;
 		instruction_rd_out = 0;
+		instruction_out = 0; 
 		//controls to WB
 		wb_sel_out = 0;
 		register_write_enable_out = 0;
@@ -36,10 +37,11 @@ always@(posedge clk) begin
 		mem_request_type_out = 0;
 		wb_sel_out = 3'b0;
 	end
-	else if(en) begin
+	else if(en == 0) begin
 		alu_out <= alu_out_in;
 		rs2_out <= rs2_in;
 		instruction_rd_out <= instruction_rd_in;
+		instruction_out <= instruction_in; 
 		//controls to WB
 		wb_sel_out <= wb_sel_in;
 		register_write_enable_out <= register_write_enable_in;

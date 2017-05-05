@@ -45,21 +45,16 @@ Generate assembly dump file (.dump)
 #### Pipeline Stages
 - [x] Instruction Fetch
 - [x] Instruction Decode
-- [ ] Execute
-- [ ] Memory
-- [ ] Write Back
+- [x] Execute
+- [x] Memory
+- [x] Write Back
 
 #### Pipeline Control Units
-- [ ] Data Hazard Detection Unit
+- [x] Data Hazard Detection Unit
     - Verify that hazards are detected during simulation
 
 #### Branch Prediction
 - [x] Branch target and condition generator
-    - [ ] Integrate in EX-Stage
-- [ ] Branch target buffer
-    - [ ] Integrate in ID-Stage
-- [ ] Hybrid branch predictor
-    - [ ] Predictor 1: Two-bit saturating counter
-    - [ ] Predictor 2: Q-learning predictor
-    - [ ] Hybrid branch selector
-    - [ ] Integrate in ID-Stage
+    - [x] Integrate in EX-Stage
+- [x] Branch target buffer
+    - [x] Integrate in ID-Stage

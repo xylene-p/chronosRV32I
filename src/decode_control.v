@@ -10,7 +10,10 @@
 // inst         (input)  instruction
 module decode_control(
     // outputs
-    rs1, rs2, rd, imm12, reg_write_en, wb_sel, opcode, funct7,
+    rs1, rs2, rd, 
+ //   imm12, 
+    reg_write_en, wb_sel, opcode, 
+ //   funct7,
     mem_req_write, mem_req_type,
     // inputs
     inst);
